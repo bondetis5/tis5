@@ -11,6 +11,8 @@ class User extends Authenticatable
 {
     use Notifiable, HasApiTokens;
 
+    const BASE_URL = 'https://br1.api.riotgames.com/lol';
+
     /**
      * The attributes that are mass assignable.
      *

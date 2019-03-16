@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\UserRank;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
+
 class LeagueController extends Controller
 {
-    const BASE_URL = 'https://br1.api.riotgames.com/lol';
+    const BASE_URL = 'https://br1.api.riotgames.com/';
     const RESULTADO_NEUT = "0";
     const RESULTADO_OK   = "1";
     const RESULTADO_FAIL = "2";
@@ -15,29 +16,34 @@ class LeagueController extends Controller
     {
         //
     }
-    public function getUserId($name) {
-        $user = Auth::user();
+    public function getUserId($name, $user = null) {
+        $user = empty($user) ? Auth::user() : $user;
+
         $retorno = array(
             "status" => self::RESULTADO_NEUT
         );
+
         $userInfo = $this->getUserInfo($name);
+
         if ($userInfo != null) {
+
             $user->league_id            = $userInfo->id;
             $user->league_accountid     = $userInfo->accountId;
             $user->league_name          = $userInfo->name;
             $user->league_profileiconid = $userInfo->profileIconId;
             $user->league_summonerlevel = $userInfo->summonerLevel;
-            $user->save();
+
             $retorno["status"] = self::RESULTADO_OK;
         } else {
             $retorno["status"] = self::RESULTADO_FAIL;
         }
+
         return $retorno;
     }
     public function getUserInfo($name)
     {
         $response = null;
-        $url = self::BASE_URL . "/summoner/v3/summoners/by-name/" . $name;
+        $url = self::BASE_URL . "lol/summoner/v4/summoners/by-name/" . $name;
         $headers = ['headers' => [
             'Origin' => 'http://match.maker',
             'Accept-Charset' => 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -46,14 +52,17 @@ class LeagueController extends Controller
         ]
         ];
         $client = new Client();
+
         try {
             $response = $client->request('GET', $url, $headers);
             if ($response->getStatusCode() == 200) {
                 $response = json_decode($response->getBody()->getContents());
             }
         } catch (\Exception $e) {
+            var_dump($e->getMessage());
             $response = null;
         }
+
         return $response;
     }
     public function getRank() {

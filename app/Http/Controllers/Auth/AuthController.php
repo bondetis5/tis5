@@ -16,8 +16,10 @@ class AuthController extends Controller
      * @param  [string] password_confirmation
      * @return [string] message
      */
-    public function signup(Request $request)
-    {
+    public function signup(Request $request) {
+        $status = false;
+        $mensagem = 'Não foi possível criar o usuário';
+
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
@@ -33,10 +35,19 @@ class AuthController extends Controller
 
         $user->league_name = $request->league_name;
 
-        $user->save();
+        $leagueController = new LeagueController();
+        $userIdResultado = $leagueController->getUserId($request->league_name, $user);
+
+        if ($userIdResultado['status'] == LeagueController::RESULTADO_OK) {
+            $user->save();
+            $status = true;
+            $mensagem = 'Usuário criado com sucesso!';
+        }
+
         return response()->json([
-            'message' => 'Successfully created user!'
-        ], 201);
+            'message' => $mensagem,
+            'status'  => $status,
+        ], 200);
     }
 
     /**
