@@ -24,7 +24,7 @@
                                 @endif
                             </div>
                         </div>
-
+                        
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
@@ -34,6 +34,20 @@
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label for="league_name" class="col-md-4 col-form-label text-md-right">{{ __('League Name') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="league_name" type="text" class="form-control{{ $errors->has('league_name') ? ' is-invalid' : '' }}" name="league_name" value="{{ old('league_name') }}" required>
+
+                                @if ($errors->has('league_name'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('league_name') }}</strong>
                                     </span>
                                 @endif
                             </div>
