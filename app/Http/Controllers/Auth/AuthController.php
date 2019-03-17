@@ -22,26 +22,33 @@ class AuthController extends Controller
 
         $request->validate([
             'name' => 'required|string',
-            'email' => 'required|string|email|unique:users',
+            'email' => 'required|string|email',
             'password' => 'required|string|confirmed',
             'league_name' => 'required|string',
         ]);
 
-        $user = new User([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
+        $usuarioExistente = User::where('email', '=', $request->email)->first();
 
-        $user->league_name = $request->league_name;
+        if (empty($usuarioExistente)) {
+            $user = new User([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+            ]);
 
-        $leagueController = new LeagueController();
-        $userIdResultado = $leagueController->getUserId($request->league_name, $user);
+            $user->league_name = $request->league_name;
 
-        if ($userIdResultado['status'] == LeagueController::RESULTADO_OK) {
-            $user->save();
-            $status = true;
-            $mensagem = 'Usuário criado com sucesso!';
+            $leagueController = new LeagueController();
+            $userIdResultado = $leagueController->getUserId($request->league_name, $user);
+
+            if ($userIdResultado['status'] == LeagueController::RESULTADO_OK) {
+                $user->save();
+                $status = true;
+                $mensagem = 'Usuário criado com sucesso!';
+            }
+        } else {
+            $mensagem = "E-mail já cadastrado.";
+            $status = false;
         }
 
         return response()->json([
