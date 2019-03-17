@@ -1,3 +1,42 @@
 body {
     background-image: url(../images/LOL.jpg);
 }
+nav {
+    background-color: #121212;
+    border-bottom: 2px solid #262626;
+    background-image: url(../images/navbar-fundo.jpg);
+    height: 60px;
+}
+
+.button-home {
+    color: #c9aa71;
+}
+
+.button-register {
+    color: #c9aa71;
+    float:right;
+}
+.button-login {
+    color: #c9aa71;
+    padding-right: 100%;
+}
+
+.card-body{
+    background-image: url(../images/navbar-fundo.jpg);
+}
+
+.col-md-4.col-form-label.text-md-right{
+    color: #c9aa71;
+}
+
+.card-header{
+    background: #e9eaec;
+}
+
+.form-control:{
+    background-color: #e9eaec; 
+}
+
+.btn.btn-primary{
+    background-color: #c9aa71;
+}
