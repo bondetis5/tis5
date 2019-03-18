@@ -20,6 +20,9 @@
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.15.2",
         "sass-loader": "^7.1.0",
-        "vue": "^2.5.17"
+        "vue": "^2.5.17",
+        "@fortawesome/fontawesome-free": "5.7.2",
+        "jquery.easing": "^1.4.1",
+        "datatables.net-bs4": "1.10.19"
     }
 }
