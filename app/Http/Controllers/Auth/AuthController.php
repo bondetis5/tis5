@@ -19,7 +19,6 @@ class AuthController extends Controller
     public function signup(Request $request) {
         $status = false;
         $mensagem = 'Não foi possível criar o usuário';
-
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|email',
@@ -40,7 +39,7 @@ class AuthController extends Controller
 
             $leagueController = new LeagueController();
             $userIdResultado = $leagueController->getUserId($request->league_name, $user);
-
+    
             if ($userIdResultado['status'] == LeagueController::RESULTADO_OK) {
                 $user->save();
                 $status = true;
@@ -77,7 +76,7 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
         if(!Auth::attempt($credentials))
             return response()->json([
-                'message' => 'Unauthorized'
+                'message' => 'Senha incorreta'
             ], 401);
         $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');
