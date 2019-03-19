@@ -18,11 +18,11 @@ function login(){
     $.ajax({
         type: "POST",
         url: "http://localhost:8000/api/auth/login",
-        data: { 
+        contentType: "application/json",
+        data: JSON.stringify({ 
             email: $('#email').val(), 
-            password: $('#password').val(),
-            remember_me: $('#remember_me').val() == 'on'? true : false
-        },
+            password: $('#password').val()
+        }),
         success: function(result) {
             var access_token =  result.access_token; 
 

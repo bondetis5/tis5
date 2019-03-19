@@ -11,3 +11,6 @@ Toda vez:
 1) git pull origin master
 2) php artisan migrate
 3) php artisan serve
+
+
+https://documenter.getpostman.com/view/6960617/S17nUqmt
