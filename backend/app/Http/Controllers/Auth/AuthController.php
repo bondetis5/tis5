@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\User;
+use mysql_xdevapi\Exception;
 
 class AuthController extends Controller
 {
@@ -39,12 +40,16 @@ class AuthController extends Controller
 
             $leagueController = new LeagueController();
             $userIdResultado = $leagueController->getUserId($request->league_name, $user);
-    
+
             if ($userIdResultado['status'] == LeagueController::RESULTADO_OK) {
                 $user->save();
                 $status = true;
                 $mensagem = 'Usuário criado com sucesso!';
+            } else  {
+                $mensagem = $userIdResultado["mensagem"];
+                $status = false;
             }
+
         } else {
             $mensagem = "E-mail já cadastrado.";
             $status = false;
@@ -95,6 +100,7 @@ class AuthController extends Controller
             'access_token' => $tokenResult->accessToken,
             'status' => $status,
             'token_type' => 'Bearer',
+            'league_name' => $user->league_name,
             'expires_at' => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString()

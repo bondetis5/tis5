@@ -23,18 +23,26 @@ class LeagueController extends Controller
             "status" => self::RESULTADO_NEUT
         );
 
-        $userInfo = $this->getUserInfo($name);
+        $result = $this->getUserInfo($name);
 
-        if ($userInfo != null) {
+        if ($result["status"]) {
+            $userInfo = $result["data"];
+            if ($userInfo != null) {
 
-            $user->league_id            = $userInfo->id;
-            $user->league_accountid     = $userInfo->accountId;
-            $user->league_name          = $userInfo->name;
-            $user->league_profileiconid = $userInfo->profileIconId;
-            $user->league_summonerlevel = $userInfo->summonerLevel;
+                $user->league_id            = $userInfo->id;
+                $user->league_accountid     = $userInfo->accountId;
+                $user->league_name          = $userInfo->name;
+                $user->league_profileiconid = $userInfo->profileIconId;
+                $user->league_summonerlevel = $userInfo->summonerLevel;
 
-            $retorno["status"] = self::RESULTADO_OK;
+                $retorno["status"] = self::RESULTADO_OK;
+                $retorno["mensagem"] = "Dados recuperados com sucesso";
+            } else {
+                $retorno["mensagem"] = $result["mensagem"];
+                $retorno["status"] = self::RESULTADO_FAIL;
+            }
         } else {
+            $retorno["mensagem"] = $result["mensagem"];
             $retorno["status"] = self::RESULTADO_FAIL;
         }
 
@@ -42,7 +50,11 @@ class LeagueController extends Controller
     }
     public function getUserInfo($name)
     {
-        $response = null;
+        $response = array(
+            "status" => false,
+            "mensagem" => "",
+            "data" => []
+        );
         $url = self::BASE_URL . "lol/summoner/v4/summoners/by-name/" . $name;
         $headers = ['headers' => [
             'Origin' => 'http://match.maker',
@@ -53,14 +65,27 @@ class LeagueController extends Controller
         ];
         $client = new Client();
 
+        $response = array();
+
         try {
             $response = $client->request('GET', $url, $headers);
             if ($response->getStatusCode() == 200) {
-                $response = json_decode($response->getBody()->getContents());
+                $retorno = json_decode($response->getBody()->getContents());
+                $response["data"] = $retorno;
+                $response["status"] = true;
+                $response["mensagem"] = "Dados recuperados com sucesso";
+
+            } else if ($response->getStatusCode() == 404) {
+                $response["data"] = null;
+                $response["status"] = false;
+                $response["mensagem"] = "O usuário informado não existe.";
             }
         } catch (\Exception $e) {
-            var_dump($e->getMessage());
-            $response = null;
+            if($e->getCode() == 404)
+                $response["mensagem"] = "Usuário League of Legends não existe.";
+            else
+                $response["mensagem"] = $e->getMessage();
+            $response["status"] = false;
         }
 
         return $response;
