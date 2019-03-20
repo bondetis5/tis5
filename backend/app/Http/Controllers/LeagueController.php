@@ -68,14 +68,14 @@ class LeagueController extends Controller
         $response = array();
 
         try {
-            $response = $client->request('GET', $url, $headers);
-            if ($response->getStatusCode() == 200) {
-                $retorno = json_decode($response->getBody()->getContents());
+            $responseGet = $client->request('GET', $url, $headers);
+            if ($responseGet->getStatusCode() == 200) {
+                $retorno = json_decode($responseGet->getBody()->getContents());
                 $response["data"] = $retorno;
                 $response["status"] = true;
                 $response["mensagem"] = "Dados recuperados com sucesso";
 
-            } else if ($response->getStatusCode() == 404) {
+            } else if ($responseGet->getStatusCode() == 404) {
                 $response["data"] = null;
                 $response["status"] = false;
                 $response["mensagem"] = "O usuário informado não existe.";
