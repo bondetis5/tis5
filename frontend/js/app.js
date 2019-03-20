@@ -52,7 +52,11 @@ function register(){
             password_confirmation: $('#password_confirmation').val()
         }),
         success: function(result) {
-            window.location.href = "login.html";
+            if(result.status){
+                window.location.href = "login.html";
+            }else{
+                alert(result.message);
+            }
         },
         error: function(data,status,er) {
             var error = JSON.parse(data.responseText);
@@ -63,13 +67,14 @@ function register(){
 }
 
 function getInfoUser(){
+    var access_token = localStorage.getItem('access_token');
+    var token_type = localStorage.getItem('token_type');
     $.ajax({
         type: "GET",
-        url: "http://localhost:8000/home/getUserInfo/",
-        contentType: 'application/json',
-        data: JSON.stringify({
-            league_name: app.league_name
-        }),
+        url: "http://localhost:8000/api/getUserInfo"
+        headers:{
+            'Authorization': token_type+" "+access_token
+        },
         success: function(result) {
             var resultado = result;
         },
