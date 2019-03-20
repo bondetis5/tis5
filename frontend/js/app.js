@@ -55,7 +55,7 @@ function register(){
             localStorage.setItem('expires_at', result.expires_at);
             localStorage.setItem('status', result.status);
             localStorage.setItem('token_type', result.token_type);    
-            //window.location.href = "index.html"
+            window.location.href = "index.html"
         },
         error: function(data,status,er) {
             var error = JSON.parse(data.responseText);
