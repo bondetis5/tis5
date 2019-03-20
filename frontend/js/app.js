@@ -71,7 +71,7 @@ function getInfoUser(){
     var token_type = localStorage.getItem('token_type');
     $.ajax({
         type: "GET",
-        url: "http://localhost:8000/api/getUserInfo"
+        url: "http://localhost:8000/api/getUserInfo",
         headers:{
             'Authorization': token_type+" "+access_token
         },
