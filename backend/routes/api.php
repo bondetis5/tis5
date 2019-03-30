@@ -34,3 +34,13 @@ Route::group([
         Route::get('user', 'AuthController@user');
     });
 });
+
+Route::group([
+    'prefix' => 'user',
+    'middleware' => 'auth:api'
+], function () {
+
+    Route::post('encontrarmatch', 'UserController@encontrarMatch');
+    Route::post('alterardados', 'UserController@alterarDados');
+
+});

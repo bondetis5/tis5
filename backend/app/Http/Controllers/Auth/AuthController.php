@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\User;
-use mysql_xdevapi\Exception;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -20,45 +20,65 @@ class AuthController extends Controller
     public function signup(Request $request) {
         $status = false;
         $mensagem = 'Não foi possível criar o usuário';
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|string|email',
-            'password' => 'required|string|confirmed',
-            'league_name' => 'required|string',
-        ]);
 
-        $usuarioExistente = User::where('email', '=', $request->email)->first();
+        try {
+            $validator = $this->validarCadastro($request);
 
-        if (empty($usuarioExistente)) {
-            $user = new User([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-            ]);
-
-            $user->league_name = $request->league_name;
-
-            $leagueController = new LeagueController();
-            $userIdResultado = $leagueController->getUserId($request->league_name, $user);
-
-            if ($userIdResultado['status'] == LeagueController::RESULTADO_OK) {
-                $user->save();
-                $status = true;
-                $mensagem = 'Usuário criado com sucesso!';
-            } else  {
-                $mensagem = $userIdResultado["mensagem"];
+            if ($validator->fails()) {
+                $mensagem = "Preencha todos os campos corretamente.";
                 $status = false;
-            }
+            } else {
+                $usuarioExistente = User::where('email', '=', $request->email)->first();
+                $leagueExistente = User::where('league_name', '=', $request->league_name)->first();
 
-        } else {
-            $mensagem = "E-mail já cadastrado.";
-            $status = false;
+                if (empty($usuarioExistente) && empty($leagueExistente)) {
+                    $user = new User([
+                        'name' => $request->name,
+                        'email' => $request->email,
+                        'password' => bcrypt($request->password),
+                    ]);
+
+                    $user->league_name = $request->league_name;
+
+                    $leagueController = new LeagueController();
+                    $userIdResultado = $leagueController->getUserId($request->league_name, $user);
+
+                    if ($userIdResultado['status'] == LeagueController::RESULTADO_OK) {
+                        $user->save();
+                        $status = true;
+                        $mensagem = 'Usuário criado com sucesso!';
+                    } else {
+                        $mensagem = $userIdResultado["mensagem"];
+                        $status = false;
+                    }
+
+                } else {
+                    if (!empty($usuarioExistente)) {
+                        $mensagem = "E-mail já cadastrado.";
+                        $status = false;
+                    } else if (!empty($leagueExistente)) {
+                        $mensagem = "Usuário League já cadastrado.";
+                        $status = false;
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $mensagem = "Ocorreu um erro. ".$e->getMessage();
         }
 
         return response()->json([
             'message' => $mensagem,
             'status'  => $status,
         ], 200);
+    }
+
+    public function validarCadastro(Request $request) {
+        return Validator::make($request->all(), [
+            'name' => 'required|string',
+            'email' => 'required|string|email',
+            'password' => 'required|string|confirmed',
+            'league_name' => 'required|string',
+        ]);
     }
 
     /**
