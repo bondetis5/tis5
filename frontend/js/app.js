@@ -15,28 +15,34 @@
     // });
 
 function login(){
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8000/api/auth/login",
-        contentType: "application/json",
-        data: JSON.stringify({ 
-            email: $('#email').val(), 
-            password: $('#password').val()
-        }),
-        success: function(result) {
-            localStorage.setItem('access_token', result.access_token);
-            localStorage.setItem('expires_at', result.expires_at);
-            localStorage.setItem('status', result.status);
-            localStorage.setItem('token_type', result.token_type);  
-            localStorage.setItem('league_name', result.league_name);  
-            window.location.href = "index.html";
-        },
-        error: function(data,status,er) {
-            var error = JSON.parse(data.responseText);
-            alert(error.message);
-            console.log(data);
-        }
-    });
+    let email = $('#email').val(); 
+    let password = $('#password').val(); 
+    if (email&&password) {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8000/api/auth/login",
+            contentType: "application/json",
+            data: JSON.stringify({ 
+                email: $('#email').val(), 
+                password: $('#password').val()
+            }),
+            success: function(result) {
+                localStorage.setItem('access_token', result.access_token);
+                localStorage.setItem('expires_at', result.expires_at);
+                localStorage.setItem('status', result.status);
+                localStorage.setItem('token_type', result.token_type);  
+                localStorage.setItem('league_name', result.league_name);  
+                window.location.href = "index.html";
+            },
+            error: function(data,status,er) {
+                var error = JSON.parse(data.responseText);
+                alert(error.message);
+                console.log(data);
+            }
+        });
+    }else{
+        alert('Todos os campos devem ser informados.');
+    }
 }
 
 function register(){
@@ -94,6 +100,16 @@ function verificaLogin(){
     }else{
         app.league_name = localStorage.getItem('league_name');
     }
+}
+
+
+function deslogar(){
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('expires_at');
+    localStorage.removeItem('status');
+    localStorage.removeItem('token_type');  
+    localStorage.removeItem('league_name'); 
+    window.location.href= "login.html";
 }
 
 var app = new Vue({

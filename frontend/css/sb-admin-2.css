@@ -10714,6 +10714,10 @@ a:focus {
   background-size: cover;
 }
 
+.color-black-font{
+  color:black;
+}
+
 .bg-gray-100 {
   background-color: #f8f9fc !important;
 }
