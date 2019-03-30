@@ -10752,7 +10752,7 @@ a:focus {
 
 .bg-gray-900 {
   background-color: #011638 !important;
-    background: url("http://cdn.leagueoflegends.com/lolkit/1.1.6/resources/images/bg-default.jpg");
+    background: url("../img/bg-default.jpg");
 }
 
 .o-hidden {
@@ -11596,7 +11596,7 @@ a:focus {
 }
 
 .bg-login-image {
-  background: url("https://sm.ign.com/ign_gr/video/l/league-of-/league-of-legends-official-kled-champion-spotlight_7m2b.jpg");
+  background: url("../img/kled-champion-spotlight.jpg");
   background-position: center;
   background-size: cover;
   height:447px; 
@@ -11604,7 +11604,7 @@ a:focus {
 }
 
 .bg-register-image {
-  background: url("https://i.pinimg.com/originals/e1/d4/2b/e1d42b2810b7c182dc1f59187318f898.png");
+  background: url("../img/imgRegister.png");
   background-position: center;
   background-size: cover;
   height:450px; 
@@ -11612,7 +11612,7 @@ a:focus {
 }
 
 .bg-password-image {
-  background: url("https://source.unsplash.com/oWTW-jNGl9I/600x800");
+  background: url("");
   background-position: center;
   background-size: cover;
 }

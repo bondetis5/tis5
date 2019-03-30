@@ -43,34 +43,43 @@ function login(){
     }else{
         alert('Todos os campos devem ser informados.');
     }
-}
+};
 
 function register(){
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8000/api/auth/signup",
-        contentType: "application/json",
-        data: JSON.stringify({ 
-            name: $('#name').val(),
-            league_name: $('#league_name').val(),
-            email: $('#email').val(), 
-            password: $('#password').val(),
-            password_confirmation: $('#password_confirmation').val()
-        }),
-        success: function(result) {
-            if(result.status){
-                window.location.href = "login.html";
-            }else{
-                alert(result.message);
+    let name = $('#name').val();
+    let league_name = $('#league_name').val();
+    let email = $('#email').val();
+    let password = $('#password').val();
+    let password_confirmation = $('#password_confirmation').val();
+    if(name&&league_name&&email&&password&&password_confirmation){
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8000/api/auth/signup",
+            contentType: "application/json",
+            data: JSON.stringify({ 
+                name: $('#name').val(),
+                league_name: $('#league_name').val(),
+                email: $('#email').val(), 
+                password: $('#password').val(),
+                password_confirmation: $('#password_confirmation').val()
+            }),
+            success: function(result) {
+                if(result.status){
+                    window.location.href = "login.html";
+                }else{
+                    alert(result.message);
+                }
+            },
+            error: function(data,status,er) {
+                var error = JSON.parse(data.responseText);
+                alert(error.message);
+                console.log(data);
             }
-        },
-        error: function(data,status,er) {
-            var error = JSON.parse(data.responseText);
-            alert(error.message);
-            console.log(data);
-        }
-    });
-}
+        });
+    }else{
+        alert("Todos os campos devem ser informados.");
+    }
+};
 
 function getInfoUser(){
     var access_token = localStorage.getItem('access_token');
@@ -90,7 +99,7 @@ function getInfoUser(){
             console.log(data);
         }
     });
-}
+};
 
 
 
@@ -100,7 +109,7 @@ function verificaLogin(){
     }else{
         app.league_name = localStorage.getItem('league_name');
     }
-}
+};
 
 
 function deslogar(){
@@ -110,7 +119,65 @@ function deslogar(){
     localStorage.removeItem('token_type');  
     localStorage.removeItem('league_name'); 
     window.location.href= "login.html";
-}
+};
+
+function setRole(){
+    let access_token = localStorage.getItem('access_token');
+    let token_type = localStorage.getItem('token_type');
+    let role = $('#role');
+
+    let settings = {
+        "url": "http://localhost:8000/api/user/alterardados",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+        "Authorization": token_type + " " + access_token,
+        "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({ 
+                roles: $('#roles').val(),
+                minLevel: $('#minLevel').val(),
+                maxLevel: $('#maxLevel').val() 
+            }),
+        success: function(result) {
+            var resultado = result;
+            console.log(resultado);
+        },
+        error: function(data,status,er) {
+            var error = JSON.parse(data.responseText);
+            alert(error.message);
+            console.log(data);
+        }
+    };
+
+    $.ajax(settings);
+};
+
+function encontrarMatch(){   
+    let roles = $('#roles').val();
+    let minLevel = $('#minLevel').val();
+    let maxLevel = $('#maxLevel').val();
+
+    let settings = {
+      "url": "http://localhost:8000/api/user/encontrarmatch",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+        "Authorization": token_type + " " + access_token,
+        "Content-Type": "application/json"
+      },
+      "data": JSON.stringify({ 
+                roles: $('#roles').val(),
+                minLevel: $('#minLevel').val(),
+                maxLevel: $('#maxLevel').val() 
+            }),
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+    });
+};
+
 
 var app = new Vue({
     el: '#app',
