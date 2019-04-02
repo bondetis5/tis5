@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -10,6 +11,8 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,7 +20,11 @@ import { AppRoutingModule } from './app-routing.module';
   imports: [BrowserModule, 
             IonicModule.forRoot(), 
             AppRoutingModule,
-            BrowserAnimationsModule
+            BrowserAnimationsModule,
+            MatDialogModule,
+            HttpClientModule,
+            FormsModule,
+            ReactiveFormsModule
           ],
   providers: [
     StatusBar,
