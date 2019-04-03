@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatSnackBarModule} from '@angular/material';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +25,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
             MatDialogModule,
             HttpClientModule,
             FormsModule,
-            ReactiveFormsModule
+            ReactiveFormsModule,
+            MatSnackBarModule
           ],
   providers: [
     StatusBar,

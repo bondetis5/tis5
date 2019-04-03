@@ -3,6 +3,7 @@ import { UsuariosService } from '../usuarios.service';
 import { UserModel } from '../shared/models/userModel';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { BaseComponent } from '../shared/base/base.component';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-registrar',
@@ -18,9 +19,9 @@ export class RegistrarPage extends BaseComponent implements OnInit {
     password_confirmation: ['', Validators.required]
   });
 
-  constructor(private usuariosService: UsuariosService, private fb: FormBuilder) 
+  constructor(private usuariosService: UsuariosService, private fb: FormBuilder, public sb: MatSnackBar) 
   { 
-    super()
+    super(sb)
   }
 
   ngOnInit() {
@@ -50,10 +51,8 @@ export class RegistrarPage extends BaseComponent implements OnInit {
           this.exibirAlertaErro(sucesso.message);
         }
       },
-      erro => {
-
-      
-      }); 
+      erro => {}
+    ); 
   }
 
 }
