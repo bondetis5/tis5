@@ -208,7 +208,58 @@
 
           <!-- Begin Page Content -->
           <div class="container-fluid">
-            <span class="color-font-lol"> Só vitória esse menino bom</span>
+            <form class="">
+              <div class="input-group">
+                <span>Em qual posição você deseja jogar?</span>
+                <hr2 class="col-lg-12">
+                  <select name="role-comp" id="role-comp" class="custom-select">  
+                    <option value="BOT">
+                      BOT
+                    </option>
+                    <option value="SUPORTE">
+                      SUPORTE
+                    </option>
+                    <option value="TOPO">
+                      TOPO
+                    </option>
+                    <option value="MEIO">
+                      MEIO
+                    </option>
+                    <option value="SELVA">
+                      SELVA
+                    </option>
+                  </select>
+                </hr2>
+                <label>Em qual posição você deseja que seus companheiros de equipe joguem?</label>
+                <hr2 class="col-lg-12">
+                  <div>
+                    <input type="checkbox" id="BOT" name="BOT">
+                    <label for="BOT">BOT</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="SUPORTE" name="SUPORTE">
+                    <label for="SUPORTE">SUPORTE</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="TOPO" name="TOPO">
+                    <label for="TOPO">TOPO</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="MEIO" name="MEIO">
+                    <label for="MEIO">MEIO</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="SELVA" name="SELVA">
+                    <label for="SELVA">SELVA</label>
+                  </div>
+                </hr2>
+              </div>
+              <div class="input-group-append">
+                <button class="btn btn-warning" type="button">
+                  Encontrar companheiros de equipe!
+                </button>
+              </div>
+            </form>
           </div>
           <!-- /.container-fluid -->
 
