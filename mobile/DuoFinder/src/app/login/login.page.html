@@ -18,12 +18,12 @@
                       <div class="text-center">
                         <h1 class="h4 text-gray-900 mb-4">DuoFinder</h1>
                       </div>
-                      <form class="user">
+                      <form [formGroup]="loginForm" (ngSubmit)="login()" class="user">
                         <div class="form-group">
-                          <input type="email" class="form-control form-control-user" id="email" aria-describedby="emailHelp" placeholder="Entre com seu endereço de Email...">
+                          <input type="email" class="form-control form-control-user" formControlName="email" required aria-describedby="emailHelp" placeholder="Entre com seu endereço de Email...">
                         </div>
                         <div class="form-group">
-                          <input type="password" class="form-control form-control-user" id="password" placeholder="Senha">
+                          <input type="password" class="form-control form-control-user" formControlName="password" required placeholder="Senha">
                         </div>
                         <div class="form-group">
                           <div class="custom-control custom-checkbox small">
@@ -31,9 +31,9 @@
                             <label class="custom-control-label" for="remember_me">Remember Me</label>
                           </div>
                         </div>
-                        <a type="submit" (click)="login()" class="btn btn-primary btn-user btn-block color-black-font"><font color="black">
+                        <button type="submit" class="btn btn-primary btn-user btn-block color-black-font"><font color="black">
                           Login</font>
-                        </a>
+                        </button>
                       </form>
                       <hr>
                       <div class="text-center">

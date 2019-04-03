@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Alert } from 'selenium-webdriver';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-base',
@@ -8,12 +9,12 @@ import { Alert } from 'selenium-webdriver';
 })
 export class BaseComponent implements OnInit {
 
-  constructor() { }
+  constructor(public sb: MatSnackBar) { }
 
   ngOnInit() {}
 
   public exibirAlertaErro(mensagem: string){
-    alert( mensagem);
+    alert(mensagem);
   }
 
 }

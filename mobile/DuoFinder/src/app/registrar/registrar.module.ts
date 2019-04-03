@@ -20,7 +20,6 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
-    FormsModule,
     ReactiveFormsModule
   ],
   declarations: [RegistrarPage]
