@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -17,7 +19,8 @@ class AuthController extends Controller
      * @param  [string] password_confirmation
      * @return [string] message
      */
-    public function signup(Request $request) {
+    public function signup(Request $request)
+    {
         $status = false;
         $mensagem = 'Não foi possível criar o usuário';
         $request->validate([
@@ -42,10 +45,13 @@ class AuthController extends Controller
             $userIdResultado = $leagueController->getUserId($request->league_name, $user);
 
             if ($userIdResultado['status'] == LeagueController::RESULTADO_OK) {
+
+                $user->league_profileiconid = rand(0,28);
                 $user->save();
                 $status = true;
-                $mensagem = 'Usuário criado com sucesso!';
-            } else  {
+                $mensagem = ['Usuário criado com sucesso!', (string)$user->league_profileiconid];
+
+            } else {
                 $mensagem = $userIdResultado["mensagem"];
                 $status = false;
             }
@@ -55,10 +61,22 @@ class AuthController extends Controller
             $status = false;
         }
 
-        return response()->json([
-            'message' => $mensagem,
-            'status'  => $status,
-        ], 200);
+
+        if (gettype($mensagem) != "string") {
+            if (count($mensagem) > 0) {
+                return response()->json([
+                    'message' => $mensagem[0],
+                    'iconId' => $mensagem[1],
+                    'status' => $status,
+                ], 200);
+            }
+        } else {
+
+            return response()->json([
+                'message' => $mensagem,
+                'status' => $status,
+            ], 200);
+        }
     }
 
     /**
@@ -78,13 +96,28 @@ class AuthController extends Controller
             'password' => 'required|string',
             'remember_me' => 'boolean'
         ]);
+
+
         $credentials = request(['email', 'password']);
-        if(!Auth::attempt($credentials))
+        if (!Auth::attempt($credentials))
             return response()->json([
                 'message' => 'Senha incorreta'
             ], 401);
-        $user = $request->user();
-        $tokenResult = $user->createToken('Personal Access Token');
+
+
+        $userLeagueIconId = User::where("email","=", $request->email)->first();
+
+        $leagueController = new LeagueController();
+        $userIdResultado = $leagueController->getUserInfo($userLeagueIconId->league_name);
+        if ($userLeagueIconId->league_profileiconid != $userIdResultado["data"]->profileIconId) {
+            return response()->json([
+                'message' => 'A conta não foi verificada! Troque o ícone de sua conta para confirmar a validação!',
+                'iconId' => $userLeagueIconId->league_profileiconid
+            ], 401);
+        }
+
+
+        $tokenResult = $userLeagueIconId->createToken('Personal Access Token');
         $token = $tokenResult->token;
         if ($request->remember_me)
             $token->expires_at = Carbon::now()->addWeeks(1);
@@ -92,7 +125,7 @@ class AuthController extends Controller
 
         $status = "A";
 
-        if (empty($user->league_accountid) or empty($user->league_id)) {
+        if (empty($userLeagueIconId->league_accountid) or empty($userLeagueIconId->league_id)) {
             $status = "I";
         }
 
@@ -100,7 +133,7 @@ class AuthController extends Controller
             'access_token' => $tokenResult->accessToken,
             'status' => $status,
             'token_type' => 'Bearer',
-            'league_name' => $user->league_name,
+            'league_name' => $userLeagueIconId->league_name,
             'expires_at' => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString()

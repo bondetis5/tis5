@@ -33,10 +33,21 @@ function login(){
         },
         error: function(data,status,er) {
             var error = JSON.parse(data.responseText);
-            alert(error.message);
+            var img = "";
+            img += "<img src="+ "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/profileicon/" + data.responseJSON.iconId + ".png" +" />";
+            alert(error.message + "\n");
+            document.getElementById("recebeIcone").innerText = "Faça login na sua conta e troque seu ícone para este:";
+            document.getElementById("icone").innerHTML = img;
             console.log(data);
         }
     });
+}
+
+function checkSummonerIcon(iconID){
+    let link = "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/profileicon/" + iconID + ".png";
+    console.log(iconID);
+    var img = $("<img />").attr('src', 'http://somedomain.com/image.jpg')
+
 }
 
 function register(){
