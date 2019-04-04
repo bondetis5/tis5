@@ -15,16 +15,16 @@
     // });
 
 function login(){
-    let email = $('#email').val(); 
-    let password = $('#password').val(); 
+    let emailP = $('#email').val(); 
+    let passwordP = $('#password').val(); 
     if (email&&password) {
         $.ajax({
             type: "POST",
             url: "http://localhost:8000/api/auth/login",
             contentType: "application/json",
             data: JSON.stringify({ 
-                email: $('#email').val(), 
-                password: $('#password').val()
+                email: emailP, 
+                password: passwordP
             }),
             success: function(result) {
                 localStorage.setItem('access_token', result.access_token);
@@ -124,7 +124,7 @@ function deslogar(){
 function setRole(){
     let access_token = localStorage.getItem('access_token');
     let token_type = localStorage.getItem('token_type');
-    let role = $('#role');
+    let roleP = $('#role');
 
     let settings = {
         "url": "http://localhost:8000/api/user/alterardados",
@@ -135,9 +135,7 @@ function setRole(){
         "Content-Type": "application/json"
         },
         "data": JSON.stringify({ 
-                roles: $('#roles').val(),
-                minLevel: $('#minLevel').val(),
-                maxLevel: $('#maxLevel').val() 
+                role_default: roleP
             }),
         success: function(result) {
             var resultado = result;
@@ -154,9 +152,9 @@ function setRole(){
 };
 
 function encontrarMatch(){   
-    let roles = $('#roles').val();
-    let minLevel = $('#minLevel').val();
-    let maxLevel = $('#maxLevel').val();
+    let rolesP = $('#roles').val();
+    let minLevelP = $('#minLevel').val();
+    let maxLevelP = $('#maxLevel').val();
 
     let settings = {
       "url": "http://localhost:8000/api/user/encontrarmatch",
@@ -167,9 +165,9 @@ function encontrarMatch(){
         "Content-Type": "application/json"
       },
       "data": JSON.stringify({ 
-                roles: $('#roles').val(),
-                minLevel: $('#minLevel').val(),
-                maxLevel: $('#maxLevel').val() 
+                roles: rolesP,
+                minLevel: minLevelP,
+                maxLevel: maxLevelP 
             }),
     };
 
@@ -178,11 +176,19 @@ function encontrarMatch(){
     });
 };
 
+function trocaModoApp(modoTela){
+    app.modo_tela = modoTela;
+}
+
+function encontrarTime(){
+
+}
 
 var app = new Vue({
     el: '#app',
     data:{
-        league_name: ''
+        league_name: '',
+        modo_tela:''
     },
     methods:{
         setButtonA: _=>{

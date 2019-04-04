@@ -43,7 +43,7 @@
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="index.html">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Partidas Recentes</span></a>
@@ -58,7 +58,7 @@
         </div>
 
         <!-- Nav Item  -->
-        <li class="nav-item">
+        <li class="nav-item" onclick="trocaModoApp('encontrarEquipe');">
           <a class="nav-link" href="#">
             <i class="fas fa-fw fa-table"></i>
             <span>Encontrar Equipe</span></a>
@@ -207,7 +207,7 @@
           <!-- End of Topbar -->
 
           <!-- Begin Page Content -->
-          <div class="container-fluid">
+          <div class="container-fluid" v-if="modo_tela == 'encontrarEquipe'">
             <form class="">
               <div class="input-group">
                 <span>Em qual posição você deseja jogar?</span>
@@ -253,9 +253,21 @@
                     <label for="SELVA">SELVA</label>
                   </div>
                 </hr2>
+                <label class="col-lg-12">Defina uma faixa de nível que seus companheiros devem possuir!</label>
+
+                <hr2 class="col-lg-6">
+                <label class="">Nivel Minimo</label>
+                <input type="number" name="minLevel" id="minLevel" class="custom-select" min="1" max="10000">  
+                </hr2>
+                <hr2 class="col-lg-6">
+                  <label class="">Nivel Maximo</label>
+                <input type="number" name="maxLevel" id="maxLevel" class="custom-select" min="1" max="10000">  
+                </hr2>
+                <hr2 class="col-lg-12"><br></hr2>
+
               </div>
               <div class="input-group-append">
-                <button class="btn btn-warning" type="button">
+                <button class="btn btn-warning" type="button" onclick="encontrarTime();">
                   Encontrar companheiros de equipe!
                 </button>
               </div>
