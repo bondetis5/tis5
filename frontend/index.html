@@ -43,7 +43,7 @@
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="index.html">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Partidas Recentes</span></a>
@@ -58,7 +58,7 @@
         </div>
 
         <!-- Nav Item  -->
-        <li class="nav-item">
+        <li class="nav-item" onclick="trocaModoApp('encontrarEquipe');">
           <a class="nav-link" href="#">
             <i class="fas fa-fw fa-table"></i>
             <span>Encontrar Equipe</span></a>
@@ -207,8 +207,71 @@
           <!-- End of Topbar -->
 
           <!-- Begin Page Content -->
-          <div class="container-fluid">
-            <span class="color-font-lol"> Só vitória esse menino bom</span>
+          <div class="container-fluid" v-if="modo_tela == 'encontrarEquipe'">
+            <form class="">
+              <div class="input-group">
+                <span>Em qual posição você deseja jogar?</span>
+                <hr2 class="col-lg-12">
+                  <select name="role-comp" id="role-comp" class="custom-select">  
+                    <option value="BOT">
+                      BOT
+                    </option>
+                    <option value="SUPORTE">
+                      SUPORTE
+                    </option>
+                    <option value="TOPO">
+                      TOPO
+                    </option>
+                    <option value="MEIO">
+                      MEIO
+                    </option>
+                    <option value="SELVA">
+                      SELVA
+                    </option>
+                  </select>
+                </hr2>
+                <label>Em qual posição você deseja que seus companheiros de equipe joguem?</label>
+                <hr2 class="col-lg-12">
+                  <div>
+                    <input type="checkbox" id="BOT" name="BOT">
+                    <label for="BOT">BOT</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="SUPORTE" name="SUPORTE">
+                    <label for="SUPORTE">SUPORTE</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="TOPO" name="TOPO">
+                    <label for="TOPO">TOPO</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="MEIO" name="MEIO">
+                    <label for="MEIO">MEIO</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="SELVA" name="SELVA">
+                    <label for="SELVA">SELVA</label>
+                  </div>
+                </hr2>
+                <label class="col-lg-12">Defina uma faixa de nível que seus companheiros devem possuir!</label>
+
+                <hr2 class="col-lg-6">
+                <label class="">Nivel Minimo</label>
+                <input type="number" name="minLevel" id="minLevel" class="custom-select" min="1" max="10000">  
+                </hr2>
+                <hr2 class="col-lg-6">
+                  <label class="">Nivel Maximo</label>
+                <input type="number" name="maxLevel" id="maxLevel" class="custom-select" min="1" max="10000">  
+                </hr2>
+                <hr2 class="col-lg-12"><br></hr2>
+
+              </div>
+              <div class="input-group-append">
+                <button class="btn btn-warning" type="button" onclick="encontrarTime();">
+                  Encontrar companheiros de equipe!
+                </button>
+              </div>
+            </form>
           </div>
           <!-- /.container-fluid -->
 
@@ -249,7 +312,7 @@
           <div class="modal-body">Caso você queira realmente sair, clique em Deslogar ):</div>
           <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-            <a class="btn btn-primary" href="login.html">Deslogar</a>
+            <a class="btn btn-primary" onclick="deslogar();"><font color="black">Deslogar</font></a>
           </div>
         </div>
       </div>
