@@ -46,7 +46,7 @@ export class RegistrarPage extends BaseComponent implements OnInit {
     this.usuariosService.registrar(usuario).subscribe(
       sucesso => {
         if(sucesso.status === true) {
-
+          window.location.href = "login";
         } else {
           this.exibirAlertaErro(sucesso.message);
         }

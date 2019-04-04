@@ -34,5 +34,6 @@ import {MatSnackBarModule} from '@angular/material';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
+  
 })
 export class AppModule {}
