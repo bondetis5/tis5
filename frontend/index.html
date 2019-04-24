@@ -337,6 +337,33 @@
 
   <script src="js/app.js"></script>
 
+  <!--  <script src="node_modules/laravel-echo/dist/echo.js"></script>
+    <script src="node_modules/pusher-js/dist/web/pusher.min.js"></script>
+    <script>
+
+      import Echo from 'node_modules/laravel-echo/dist/echo.js'
+
+      window.Pusher = require('pusher-js');
+
+      window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: '12bf0a963cc50a5591d1',
+        cluster: 'us2',
+        encrypted: true
+      });
+
+      Echo.join('usuarios-online')
+              .here((users) => {
+                //
+              })
+              .joining((user) => {
+                console.log(user.name);
+              })
+              .leaving((user) => {
+                console.log(user.name);
+              });
+    </script>-->
+
 </body>
 
 </html>
