@@ -21,6 +21,11 @@ window.Echo = new Echo ({
     key: 'your-pusher-key'
 });
 
+Echo.channel('orders')
+    .listen('OrderShipped', (e) => {
+        console.log(e.order.name);
+    });
+
 function login(){
     let emailP = $('#email').val();
     let passwordP = $('#password').val();
