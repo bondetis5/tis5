@@ -42,5 +42,6 @@ Route::group([
 
     Route::post('encontrarmatch', 'UserController@encontrarMatch');
     Route::post('alterardados', 'UserController@alterarDados');
+    Route::post('usuarioonline', 'UserPresenceController@usuarioOnline');
 
 });
