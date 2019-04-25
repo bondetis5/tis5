@@ -276,7 +276,7 @@
             <div v-if="companheirosEncontrados">
               <p>Nick dos jogadores Encontrados para jogar com você:</p>
               <li v-for="companheiro in companheiros">
-                {{companheiro}}
+                {{companheiro.league_name}}
               </li>
               <p v-if="semCompanheiro">Não foi encontrada nenhuma pessoa para jogar com você =( </p>
             </div>
