@@ -193,8 +193,8 @@ function encontrarMatch(){
             var resultado = result;
             console.log(resultado);
 
-            app.companheirosEncontrados = true;
             if(resultado.data.length>0){
+                app.companheirosEncontrados = true;
                 resultado.data.forEach(function(companheiro){
                     app.companheiros.push(companheiro);
                 });

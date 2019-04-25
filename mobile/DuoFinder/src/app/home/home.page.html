@@ -22,8 +22,8 @@
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-          <a class="nav-link" href="index.html">
+        <li class="nav-item active" (click)="trocarModoTela('')">
+          <a class="nav-link">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Partidas Recentes</span></a>
         </li>
@@ -37,8 +37,8 @@
         </div>
 
         <!-- Nav Item  -->
-        <li class="nav-item">
-          <a class="nav-link" href="#">
+        <li class="nav-item" (click)="trocarModoTela('encontrarEquipe')">
+          <a class="nav-link">
             <i class="fas fa-fw fa-table"></i>
             <span>Encontrar Equipe</span></a>
         </li>
@@ -154,7 +154,7 @@
 
               <!-- Nav Item - User Information -->
               <li class="nav-item dropdown no-arrow">
-                <a class="nav-link dropdown-toggle" (click)="deslogar()" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" id="userDropdown" (click)="deslogar()" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="mr-2 d-none d-lg-inline  small color-font-lol">{{league_name}}</span>
                   <img class="img-profile rounded-circle" src="assets/img/Renekton_Square_0.png" width="60" height="60">
                 </a>
@@ -186,8 +186,78 @@
           <!-- End of Topbar -->
 
           <!-- Begin Page Content -->
-          <div class="container-fluid">
-            <span class="color-font-lol"> Só vitória esse menino bom</span>
+          <div class="container-fluid" *ngIf="modo_tela == 'encontrarEquipe'">
+            <form class="" [formGroup]="matchForm" (ngSubmit)="encontrarMatch()">
+              <div class="input-group">
+                <span>Em qual posição você deseja jogar?</span>
+                <h2 class="col-lg-12">
+                  <select name="role-comp" id="role-comp" class="custom-select" formControlName="roleUsuario">
+                    <option value="BOT">
+                      BOT
+                    </option>
+                    <option value="SUPORTE">
+                      SUPORTE
+                    </option>
+                    <option value="TOPO">
+                      TOPO
+                    </option>
+                    <option value="MEIO">
+                      MEIO
+                    </option>
+                    <option value="SELVA">
+                      SELVA
+                    </option>
+                  </select>
+                </h2>
+                <label>Em qual posição você deseja que seus companheiros de equipe joguem?</label>
+                <h2 class="col-lg-12">
+                  <div>                    
+                    <input type="checkbox" value="BOT" name="roles" [formControl]="matchForm.controls['roleComp'].controls[0]">
+                    <label for="BOT">BOT</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" value="SUPORTE" name="roles" [formControl]="matchForm.controls['roleComp'].controls[1]">
+                    <label for="SUPORTE">SUPORTE</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" value="TOPO" name="roles" [formControl]="matchForm.controls['roleComp'].controls[2]">
+                    <label for="TOPO">TOPO</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" value="MEIO" name="roles" [formControl]="matchForm.controls['roleComp'].controls[3]">
+                    <label for="MEIO">MEIO</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" value="SELVA" name="roles" [formControl]="matchForm.controls['roleComp'].controls[4]">
+                    <label for="SELVA">SELVA</label>
+                  </div>
+                </h2>
+                <label class="col-lg-12">Defina uma faixa de nível que seus companheiros devem possuir!</label>
+
+                <h2 class="col-lg-6">
+                <label class="">Nivel Minimo</label>
+                <input type="number" name="minLevel" id="minLevel" class="custom-select" min="1" max="10000" formControlName="minLevelP" >  
+                </h2>
+                <h2 class="col-lg-6">
+                  <label class="">Nivel Maximo</label>
+                <input type="number" name="maxLevel" id="maxLevel" class="custom-select" min="1" max="10000" formControlName="maxLevelP" >  
+                </h2>
+                <h2 class="col-lg-12"><br></h2>
+
+              </div>
+              <div class="input-group-append">
+                <button class="btn btn-warning" type="submit">
+                  Encontrar companheiros de equipe!
+                </button>
+              </div>
+            </form>
+
+            <div *ngIf="listaCompanheirosEncontrados.length > 0">
+              <p>Nick dos jogadores Encontrados para jogar com você:</p>
+              <li *ngFor="let companheiro of listaCompanheirosEncontrados">
+                {{companheiro.league_name}}
+              </li>
+            </div>
           </div>
           <!-- /.container-fluid -->
 
@@ -228,7 +298,7 @@
           <div class="modal-body">Caso você queira realmente sair, clique em Deslogar ):</div>
           <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-            <a class="btn btn-primary" onclick="deslogar();"><font color="black">Deslogar</font></a>
+            <a class="btn btn-primary" (click)="deslogar();"><font color="black">Deslogar</font></a>
           </div>
         </div>
       </div>
