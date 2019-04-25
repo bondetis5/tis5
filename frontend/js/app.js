@@ -14,18 +14,6 @@
 
 // });
 
-import Echo from "laravel-echo"
-
-window.Echo = new Echo ({
-    broadcaster: 'pusher',
-    key: 'your-pusher-key'
-});
-
-Echo.channel('orders')
-    .listen('OrderShipped', (e) => {
-        console.log(e.order.name);
-    });
-
 function login(){
     let emailP = $('#email').val();
     let passwordP = $('#password').val();
