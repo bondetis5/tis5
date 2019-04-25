@@ -189,11 +189,28 @@ function encontrarMatch(){
             minLevel: minLevelP,
             maxLevel: maxLevelP
         }),
+        success: function(result) {
+            var resultado = result;
+            console.log(resultado);
+
+            app.companheirosEncontrados = true;
+            if(resultado.data.length>0){
+                resultado.data.forEach(function(companheiro){
+                    app.companheiros.push(companheiro);
+                });
+                semCompanheiro = false;
+            }else{
+                app.semCompanheiro = true;
+            }
+        },
+        error: function(data,status,er) {
+            var error = JSON.parse(data.responseText);
+            alert(error.message);
+            console.log(data);
+        }
     };
 
-    $.ajax(settings).done(function (response) {
-        console.log(response);
-    });
+    $.ajax(settings);
 };
 
 function trocaModoApp(modoTela){
@@ -204,7 +221,10 @@ var app = new Vue({
     el: '#app',
     data:{
         league_name: '',
-        modo_tela:''
+        modo_tela:'',
+        companheirosEncontrados: false,
+        companheiros: [],
+        semCompanheiro: false
     },
     methods:{
         setButtonA: _=>{
