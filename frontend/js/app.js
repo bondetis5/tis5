@@ -201,6 +201,7 @@ function encontrarMatch(){
                 semCompanheiro = false;
             }else{
                 app.semCompanheiro = true;
+                app.companheirosEncontrados = true;
             }
         },
         error: function(data,status,er) {
