@@ -134,10 +134,10 @@ function deslogar(){
     window.location.href= "login.html";
 };
 
-function setRole(){
+function setRole(role){
     let access_token = localStorage.getItem('access_token');
     let token_type = localStorage.getItem('token_type');
-    let roleP = $('#role');
+    let roleP = role;
 
     let settings = {
         "url": "http://localhost:8000/api/user/alterardados",
@@ -165,7 +165,14 @@ function setRole(){
 };
 
 function encontrarMatch(){
-    let rolesP = $('#roles').val();
+    let access_token = localStorage.getItem('access_token');
+    let token_type = localStorage.getItem('token_type');
+    let roleUsuario = $('#role-comp').val();
+    setRole(roleUsuario);
+    let rolesP = []; 
+    $.each($("input[name='roles']:checked"), function(){
+        rolesP.push($(this).val());
+    });
     let minLevelP = $('#minLevel').val();
     let maxLevelP = $('#maxLevel').val();
 
@@ -191,10 +198,6 @@ function encontrarMatch(){
 
 function trocaModoApp(modoTela){
     app.modo_tela = modoTela;
-}
-
-function encontrarTime(){
-
 }
 
 var app = new Vue({
