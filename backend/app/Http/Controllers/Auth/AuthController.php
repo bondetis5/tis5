@@ -142,7 +142,7 @@ class AuthController extends Controller
         if ($userLeagueIconId->league_profileiconid != $userIdResultado["data"]->profileIconId) {
             return response()->json([
                 'message' => 'A conta não foi verificada! Troque o ícone de sua conta para confirmar a validação!',
-                'iconId' => $userLeagueIconId->league_profileiconid
+                'iconId' => $userIdResultado["data"]->profileIconId
             ], 401);
         }
 

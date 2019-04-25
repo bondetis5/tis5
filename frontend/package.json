@@ -35,13 +35,13 @@
         "bootstrap": "4.3.1",
         "chart.js": "2.7.3",
         "datatables.net-bs4": "1.10.19",
-        "jquery": "3.3.1",
+        "jquery": "^3.4.0",
         "jquery.easing": "^1.4.1",
         "laravel-echo": "^1.5.3",
         "pusher-js": "^4.4.0"
     },
     "devDependencies": {
-        "browser-sync": "2.26.3",
+        "browser-sync": "^2.26.5",
         "del": "^3.0.0",
         "gulp": "4.0.0",
         "gulp-autoprefixer": "6.0.0",

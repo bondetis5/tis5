@@ -16,6 +16,8 @@ export class LoginPage extends BaseComponent implements OnInit {
     password: ['', Validators.required],
   });
   usuarioLogin: UsuarioLoginModel;
+  imagemTroca: string;
+
   constructor(private usuariosService: UsuariosService, private fb: FormBuilder, public sb: MatSnackBar) 
   { 
     super(sb)
@@ -38,7 +40,10 @@ export class LoginPage extends BaseComponent implements OnInit {
             window.location.href = "home";
         },
         erro => {
-          this.exibirAlertaErro(erro);
+          this.exibirAlertaErro(erro.error.message);
+          if(erro.status === 401 && erro.error.iconId) {
+            this.imagemTroca = 'http://ddragon.leagueoflegends.com/cdn/6.24.1/img/profileicon/' + erro.error.iconId + '.png'
+          }
         }
       )
     } else {

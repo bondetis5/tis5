@@ -35,7 +35,10 @@
                           Login</font>
                         </button>
                       </form>
-                      <hr>
+                      <div class="icone-login" *ngIf="imagemTroca">
+                        <p>Faça login e troque seu ícone para este: </p>
+                        <img class="img-troca" src="imagemTroca"/>
+                      </div>
                       <div class="text-center">
                         <a class="small" href="#">Esqueceu sua senha?  </a>
                       </div>
