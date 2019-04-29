@@ -69,13 +69,13 @@ function login(){
                     modalValidacao += "<div class='modal-dialog' role='document'>";
                     modalValidacao += "<div class='modal-content'>";
                     modalValidacao += "<div class='modal-header'>";
-                    modalValidacao += "<h5 class='modal-title'>Erro na validaçao!</h5>";
+                    modalValidacao += "<h5 class='modal-title'>Erro na validação!</h5>";
                     modalValidacao += "<button type='button' class='close' data-dismiss='modal' aria-label='Fechar'>";
                     modalValidacao += "<span aria-hidden='true'>&times;</span>";
                     modalValidacao += "</button>";
                     modalValidacao += "</div>";
                     modalValidacao += "<div class='modal-body'>";
-                    modalValidacao += "<p>Conta nao validada! Faça login e troque seu icone por este:</p>";
+                    modalValidacao += "<p>Conta não validada! Faça login no jogo me troque seu ícone por este:</p>";
                     modalValidacao += img;
                     modalValidacao += "</div>";
                     modalValidacao += "<div class='modal-footer'>";
@@ -132,7 +132,7 @@ function register(){
                     modalConfirmacao += "</button>";
                     modalConfirmacao += "</div>";
                     modalConfirmacao += "<div class='modal-body'>";
-                    modalConfirmacao += "<p>Usuario criado com sucesso!</p>";
+                    modalConfirmacao += "<p>Usuário criado com sucesso!</p>";
                     modalConfirmacao += "</div>";
                     modalConfirmacao += "<div class='modal-footer'>";
                     modalConfirmacao += "<button type='button' class='btn btn-secondary' onclick='retornaLogin()' data-dismiss='modal'>Fechar</button>";

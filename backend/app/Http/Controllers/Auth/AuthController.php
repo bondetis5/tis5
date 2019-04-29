@@ -142,11 +142,17 @@ class AuthController extends Controller
 
         $leagueController = new LeagueController();
         $userIdResultado = $leagueController->getUserInfo($userLeagueIconId->league_name);
-        if ($userLeagueIconId->league_profileiconid != $userIdResultado["data"]->profileIconId) {
-            return response()->json([
-                'message' => 'A conta não foi verificada! Troque o ícone de sua conta para confirmar a validação!',
-                'iconId' => $userLeagueIconId->league_profileiconid
-            ], 401);
+        if($userLeagueIconId->isActive == false){
+            if ($userLeagueIconId->league_profileiconid != $userIdResultado["data"]->profileIconId) {
+                return response()->json([
+                    'message' => 'A conta não foi verificada! Troque o ícone de sua conta para confirmar a validação!',
+                    'iconId' => $userLeagueIconId->league_profileiconid
+                ], 401);
+            }
+            else{
+                $userLeagueIconId->isActive = true;
+                $userLeagueIconId->save();
+            }
         }
 
 
