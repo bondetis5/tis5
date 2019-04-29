@@ -37,13 +37,56 @@ function login(){
                 window.location.href = "index.html";
             },
             error: function(data,status,er) {
-                var error = JSON.parse(data.responseText);
-                var img = "";
-                img += "<img src="+ "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/profileicon/" + data.responseJSON.iconId + ".png" +" />";
-                alert(error.message + "\n");
-                document.getElementById("recebeIcone").innerText = "Faça login na sua conta e troque seu ícone para este:";
-                document.getElementById("icone").innerHTML = img;
-                console.log(data);
+                if(data.responseJSON.message != "A conta não foi verificada! Troque o ícone de sua conta para confirmar a validação!"){
+                    var modalValidacao = "";
+                    modalValidacao += "<div  id='modalValidacao' class='modal' tabindex='-1' role='dialog'>";
+                    modalValidacao += "<div class='modal-dialog' role='document'>";
+                    modalValidacao += "<div class='modal-content'>";
+                    modalValidacao += "<div class='modal-header'>";
+                    modalValidacao += "<h5 class='modal-title'>Erro no Login!</h5>";
+                    modalValidacao += "<button type='button' class='close' data-dismiss='modal' aria-label='Fechar'>";
+                    modalValidacao += "<span aria-hidden='true'>&times;</span>";
+                    modalValidacao += "</button>";
+                    modalValidacao += "</div>";
+                    modalValidacao += "<div class='modal-body'>";
+                    modalValidacao += "<p>"+data.responseJSON.message+"</p>";
+                    modalValidacao += "</div>";
+                    modalValidacao += "<div class='modal-footer'>";
+                    modalValidacao += "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Fechar</button>";
+                    modalValidacao += "</div>";
+                    modalValidacao += "</div>";
+                    modalValidacao += "</div>";
+                    modalValidacao += "</div>";
+                    $('#recebeIcone').html(modalValidacao);
+                    $('#modalValidacao').modal('show');
+                }
+                else {
+                    var error = JSON.parse(data.responseText);
+                    var img = "";
+                    img += "<img class='rounded mx-auto d-block' src=" + "http://ddragon.leagueoflegends.com/cdn/6.24.1/img/profileicon/" + data.responseJSON.iconId + ".png" + " />";
+                    var modalValidacao = "";
+                    modalValidacao += "<div  id='modalValidacao' class='modal' tabindex='-1' role='dialog'>";
+                    modalValidacao += "<div class='modal-dialog' role='document'>";
+                    modalValidacao += "<div class='modal-content'>";
+                    modalValidacao += "<div class='modal-header'>";
+                    modalValidacao += "<h5 class='modal-title'>Erro na validaçao!</h5>";
+                    modalValidacao += "<button type='button' class='close' data-dismiss='modal' aria-label='Fechar'>";
+                    modalValidacao += "<span aria-hidden='true'>&times;</span>";
+                    modalValidacao += "</button>";
+                    modalValidacao += "</div>";
+                    modalValidacao += "<div class='modal-body'>";
+                    modalValidacao += "<p>Conta nao validada! Faça login e troque seu icone por este:</p>";
+                    modalValidacao += img;
+                    modalValidacao += "</div>";
+                    modalValidacao += "<div class='modal-footer'>";
+                    modalValidacao += "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Fechar</button>";
+                    modalValidacao += "</div>";
+                    modalValidacao += "</div>";
+                    modalValidacao += "</div>";
+                    modalValidacao += "</div>";
+                    $('#recebeIcone').html(modalValidacao);
+                    $('#modalValidacao').modal('show');
+                }
             }
         });
     }  else{
@@ -78,7 +121,28 @@ function register(){
             }),
             success: function(result) {
                 if(result.status){
-                    window.location.href = "login.html";
+                    var modalConfirmacao = "";
+                    modalConfirmacao += "<div  id='modalConfirmacao' class='modal' tabindex='-1' role='dialog'>";
+                    modalConfirmacao += "<div class='modal-dialog' role='document'>";
+                    modalConfirmacao += "<div class='modal-content'>";
+                    modalConfirmacao += "<div class='modal-header'>";
+                    modalConfirmacao += "<h5 class='modal-title'>Sucesso!</h5>";
+                    modalConfirmacao += "<button type='button' class='close' data-dismiss='modal' aria-label='Fechar'>";
+                    modalConfirmacao += "<span aria-hidden='true'>&times;</span>";
+                    modalConfirmacao += "</button>";
+                    modalConfirmacao += "</div>";
+                    modalConfirmacao += "<div class='modal-body'>";
+                    modalConfirmacao += "<p>Usuario criado com sucesso!</p>";
+                    modalConfirmacao += "</div>";
+                    modalConfirmacao += "<div class='modal-footer'>";
+                    modalConfirmacao += "<button type='button' class='btn btn-secondary' onclick='retornaLogin()' data-dismiss='modal'>Fechar</button>";
+                    modalConfirmacao += "</div>";
+                    modalConfirmacao += "</div>";
+                    modalConfirmacao += "</div>";
+                    modalConfirmacao += "</div>";
+                    $('#recebeModal').html(modalConfirmacao);
+                    $('#modalConfirmacao').modal('show');
+
                 }else{
                     alert(result.message);
                 }
@@ -93,6 +157,9 @@ function register(){
         alert("Todos os campos devem ser informados.");
     }
 };
+function retornaLogin(){
+    window.location.href = "login.html";
+}
 
 function getInfoUser(){
     var access_token = localStorage.getItem('access_token');
