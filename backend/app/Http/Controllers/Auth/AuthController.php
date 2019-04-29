@@ -46,10 +46,13 @@ class AuthController extends Controller
                     $leagueController = new LeagueController();
                     $userIdResultado = $leagueController->getUserId($request->league_name, $user);
 
-
                     if ($userIdResultado['status'] == LeagueController::RESULTADO_OK) {
-
-                        $user->league_profileiconid = rand(0,28);
+                        $userIdResultado = $leagueController->getUserInfo($request->league_name);
+                        $numeroAleatorio = rand(0,28);
+                        while ($userIdResultado["data"]->profileIconId == $numeroAleatorio){
+                            $numeroAleatorio = rand(0,28);
+                        }
+                        $user->league_profileiconid = $numeroAleatorio;
                         $user->save();
                         $status = true;
                         $mensagem = ['Usuário criado com sucesso!', (string)$user->league_profileiconid];
@@ -142,7 +145,7 @@ class AuthController extends Controller
         if ($userLeagueIconId->league_profileiconid != $userIdResultado["data"]->profileIconId) {
             return response()->json([
                 'message' => 'A conta não foi verificada! Troque o ícone de sua conta para confirmar a validação!',
-                'iconId' => $userIdResultado["data"]->profileIconId
+                'iconId' => $userLeagueIconId->league_profileiconid
             ], 401);
         }
 
