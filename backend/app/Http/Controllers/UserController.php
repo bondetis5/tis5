@@ -16,8 +16,6 @@ use mysql_xdevapi\Exception;
 
 class UserController {
 
-
-
     public function encontrarMatch(Request $request) {
 
         $retorno = [
@@ -99,7 +97,7 @@ class UserController {
             if (empty($user)) {
                 throw new \Exception("League Name não encontrado");
             }
-            $amigos = Amigo::where('id_user', $user->id)->get();
+            $amigos = Amigo::where('id_user', $user->id)->with('user')->get();
 
             $retorno['data'] = $amigos;
             $retorno['message'] = "Operação realizada com sucesso";
@@ -128,9 +126,10 @@ class UserController {
                 throw new \Exception("League Name não encontrado");
             }
             
-            $amigo = new Amigo();
-            $amigo->id_user = $user->id;
-            $amigo->id_user_amigo = $amigo->id;
+            $amizade = new Amigo();
+            $amizade->id_user = $user->id;
+            $amizade->id_user_amigo = $amigo->id;
+            $amizade->save();
             
             $retorno['message'] = "Operação realizada com sucesso";
             $retorno['status'] = true;
@@ -162,6 +161,8 @@ class UserController {
             
             if (empty($amizade)) {
                 throw new \Exception("Amizade não encontrada");
+            } else {
+                $amizade->delete();
             }
             
             $retorno['message'] = "Operação realizada com sucesso";
