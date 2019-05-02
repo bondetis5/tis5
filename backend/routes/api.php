@@ -43,5 +43,8 @@ Route::group([
     Route::post('encontrarmatch', 'UserController@encontrarMatch');
     Route::post('alterardados', 'UserController@alterarDados');
     Route::post('usuarioonline', 'UserPresenceController@usuarioOnline');
+    Route::post('removeramigo', 'UserController@removerAmigo');
+    Route::post('adicionaramigo', 'UserController@addAmigo');
+    Route::get('buscaramigos', 'UserController@buscarAmigos');
 
 });
