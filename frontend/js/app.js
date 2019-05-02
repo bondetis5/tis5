@@ -75,7 +75,7 @@ function login(){
                     modalValidacao += "</button>";
                     modalValidacao += "</div>";
                     modalValidacao += "<div class='modal-body'>";
-                    modalValidacao += "<p>Conta não validada! Faça login no jogo me troque seu ícone por este:</p>";
+                    modalValidacao += "<p>Conta não validada! Faça login no League e troque seu ícone pelo ícone a seguir para realizar a validação.</p>";
                     modalValidacao += img;
                     modalValidacao += "</div>";
                     modalValidacao += "<div class='modal-footer'>";
