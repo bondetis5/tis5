@@ -48,3 +48,13 @@ Route::group([
     Route::post('buscaramigos', 'UserController@buscarAmigos');
 
 });
+
+Route::group([
+    'prefix' => 'avaliacao',
+    'middleware' => 'auth:api'
+], function () {
+
+    Route::post('buscaravaliacao', 'AvaliacaoController@buscarAvaliacao');
+    Route::post('adicionaravaliacao', 'AvaliacaoController@adicionarAvaliacao');
+
+});

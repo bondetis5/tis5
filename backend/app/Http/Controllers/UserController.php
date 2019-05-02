@@ -97,7 +97,7 @@ class UserController {
             if (empty($user)) {
                 throw new \Exception("League Name não encontrado");
             }
-            $amigos = Amigo::where('id_user', $user->id)->with('user')->get();
+            $amigos = Amigo::where('id_user', $user->id)->with('amigo')->get();
 
             $retorno['data'] = $amigos;
             $retorno['message'] = "Operação realizada com sucesso";
