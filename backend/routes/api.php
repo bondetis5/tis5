@@ -45,6 +45,6 @@ Route::group([
     Route::post('usuarioonline', 'UserPresenceController@usuarioOnline');
     Route::post('removeramigo', 'UserController@removerAmigo');
     Route::post('adicionaramigo', 'UserController@addAmigo');
-    Route::get('buscaramigos', 'UserController@buscarAmigos');
+    Route::post('buscaramigos', 'UserController@buscarAmigos');
 
 });

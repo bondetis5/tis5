@@ -292,7 +292,7 @@ function buscarAmigos(){
 
     let settings = {
         "url": "http://localhost:8000/api/user/buscaramigos",
-        "method": "GET",
+        "method": "POST",
         "timeout": 0,
         "headers": {
             "Authorization": token_type + " " + access_token,
@@ -302,7 +302,7 @@ function buscarAmigos(){
             nick: nickP
         }),
         success: function(result) {
-            app.companheiros = result;
+            app.companheiros = result.data;
         },
         error: function(data,status,er) {
             var error = JSON.parse(data.responseText);
