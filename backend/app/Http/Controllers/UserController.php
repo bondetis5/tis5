@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Amigo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use mysql_xdevapi\Exception;
@@ -84,5 +85,95 @@ class UserController {
 
         return response()->json($retorno, 200);
     }
+    
+     public function buscarAmigos(Request $request) {
+        $retorno = [
+            'message' => "Não inicializado",
+            'status'  => false,
+            'data'    => []
+        ];
+
+        try {
+            $user = User::where('league_name', $request->nick)->first();
+            
+            if (empty($user)) {
+                throw new \Exception("League Name não encontrado");
+            }
+            $amigos = Amigo::where('id_user', $user->id)->get();
+
+            $retorno['data'] = $amigos;
+            $retorno['message'] = "Operação realizada com sucesso";
+            $retorno['status'] = true;
+
+        } catch(\Exception $e) {
+            $retorno['message'] = $e->getMessage();
+            $retorno['status'] = false;
+        }
+
+        return response()->json($retorno, 200);
+    }
+    
+    public function addAmigo(Request $request) {
+        $retorno = [
+            'message' => "Não inicializado",
+            'status'  => false,
+            'data'    => []
+        ];
+
+        try {
+            $user = User::where('league_name', $request->nick)->first();
+            $amigo = User::where('league_name', $request->nickamigo)->first();
+            
+            if (empty($user) || empty($amigo)) {
+                throw new \Exception("League Name não encontrado");
+            }
+            
+            $amigo = new Amigo();
+            $amigo->id_user = $user->id;
+            $amigo->id_user_amigo = $amigo->id;
+            
+            $retorno['message'] = "Operação realizada com sucesso";
+            $retorno['status'] = true;
+
+        } catch(\Exception $e) {
+            $retorno['message'] = $e->getMessage();
+            $retorno['status'] = false;
+        }
+
+        return response()->json($retorno, 200);
+    }
+    
+    public function removerAmigo(Request $request) {
+        $retorno = [
+            'message' => "Não inicializado",
+            'status'  => false,
+            'data'    => []
+        ];
+
+        try {
+            $user = User::where('league_name', $request->nick)->first();
+            $amigo = User::where('league_name', $request->nickamigo)->first();
+            
+            if (empty($user) || empty($amigo)) {
+                throw new \Exception("League Name não encontrado");
+            }
+            
+            $amizade = Amigo::where('id_user', $user->id)->where('id_user_amigo', $amigo->id)->first();
+            
+            if (empty($amizade)) {
+                throw new \Exception("Amizade não encontrada");
+            }
+            
+            $retorno['message'] = "Operação realizada com sucesso";
+            $retorno['status'] = true;
+
+        } catch(\Exception $e) {
+            $retorno['message'] = $e->getMessage();
+            $retorno['status'] = false;
+        }
+
+        return response()->json($retorno, 200);
+    }
+
 
 }
