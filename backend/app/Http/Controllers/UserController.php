@@ -86,7 +86,7 @@ class UserController {
         return response()->json($retorno, 200);
     }
     
-     public function buscarAmigos(Request $request) {
+    public function buscarAmigos(Request $request) {
         $retorno = [
             'message' => "Não inicializado",
             'status'  => false,
