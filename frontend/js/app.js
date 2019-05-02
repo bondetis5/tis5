@@ -18,7 +18,7 @@ function login(){
     let emailP = $('#email').val();
     let passwordP = $('#password').val();
     
-    if (email&&password) {
+    if (emailP&&passwordP) {
 
         $.ajax({
             type: "POST",
@@ -29,12 +29,16 @@ function login(){
                 password: $('#password').val()
             }),
             success: function(result) {
-                localStorage.setItem('access_token', result.access_token);
-                localStorage.setItem('expires_at', result.expires_at);
-                localStorage.setItem('status', result.status);
-                localStorage.setItem('token_type', result.token_type);
-                localStorage.setItem('league_name', result.league_name);
-                window.location.href = "index.html";
+                if(typeof result == 'string'){
+                    alert('Usuario e Senha não encontrados.')
+                }else{
+                    localStorage.setItem('access_token', result.access_token);
+                    localStorage.setItem('expires_at', result.expires_at);
+                    localStorage.setItem('status', result.status);
+                    localStorage.setItem('token_type', result.token_type);
+                    localStorage.setItem('league_name', result.league_name);
+                    window.location.href = "index.html";
+                }
             },
             error: function(data,status,er) {
                 if(data.responseJSON.message != "A conta não foi verificada! Troque o ícone de sua conta para confirmar a validação!"){
@@ -281,19 +285,56 @@ function encontrarMatch(){
     $.ajax(settings);
 };
 
+function buscarAmigos(){
+    let nickP = app.league_name;
+    let access_token = localStorage.getItem('access_token');
+    let token_type = localStorage.getItem('token_type');
+
+    let settings = {
+        "url": "http://localhost:8000/api/user/buscaramigos",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+            "Authorization": token_type + " " + access_token,
+            "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+            nick: nickP
+        }),
+        success: function(result) {
+            app.companheiros = result.data;
+        },
+        error: function(data,status,er) {
+            var error = JSON.parse(data.responseText);
+            alert(error.message);
+            console.log(data);
+        }
+    };
+
+    $.ajax(settings);
+
+}
+
 function trocaModoApp(modoTela){
     app.modo_tela = modoTela;
 }
+
+var statusButton = 'Ficar Online';
 
 var app = new Vue({
     el: '#app',
     data:{
         league_name: '',
-        modo_tela:'',
+        modo_tela:'jogadoresOnline',
         companheirosEncontrados: false,
         companheiros: [],
-        semCompanheiro: false
+        semCompanheiro: false,
+        status: 'Offline',
+        usuariosOnline: [],
+        socket : io('http://localhost:3001'),
+        buttonStatus: statusButton
     },
+
     methods:{
         setButtonA: _=>{
             if(app.achou){
@@ -303,6 +344,42 @@ var app = new Vue({
                 app.acaoMessage = "Esconder Mensagem"
                 app.achou = true;
             }
+        },
+        alterarStatus(){
+            if(app.status=='Online'){
+                this.usuarioOff();
+            }else{
+                this.usuarioOnline();
+            }
+        },
+        usuarioOnline() {
+            app.status = 'Online';
+            app.buttonStatus = 'Ficar Offline';
+            this.socket.emit('USERONLINE', {
+                user: this.league_name
+            });
+        },
+        usuarioOff(){
+            app.status = 'Offline';
+            app.buttonStatus = 'Ficar Online';
+            this.socket.emit('USEROFF', {
+                user: this.league_name
+            });
+        },
+        verificaOnline(){
+            this.socket.emit('INICIALIZA', {});
         }
+    },
+    mounted() {
+        this.socket.on('USERONLINE', (data) => {
+            this.usuariosOnline = data;
+            data.forEach(function(usuario){
+                if(app.league_name == usuario){
+                    app.status = 'Online';
+                    app.buttonStatus = 'Ficar Offline';
+                }
+            })
+        });
+        this.verificaOnline();
     }
 });

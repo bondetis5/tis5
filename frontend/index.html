@@ -43,7 +43,7 @@
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
+        <li class="nav-item" onclick="trocaModoApp('jogadoresOnline');">
           <a class="nav-link" href="index.html">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Partidas Recentes</span></a>
@@ -65,11 +65,17 @@
         </li>
 
         <li class="nav-item"> 
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" onclick='buscarAmigos();'>
             <i class="fas fa-fw fa-address-book"></i>
             <span>Lista de Amigos</span>
           </a>
           <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Adicionados</h6>
+              <a class="collapse-item" href="#" v-for='amigo in companheiros'>{{amigo.league_name}}</a>
+            </div>
+          </div>
+          <!-- <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">Online</h6>
               <a class="collapse-item" href="#">Fulando</a>
@@ -78,7 +84,7 @@
               <h6 class="collapse-header">Offline</h6>
               <a class="collapse-item" href="#">Ciclano</a>
             </div>
-          </div>
+          </div> -->
         </li>
         
         <!-- Divider -->
@@ -129,9 +135,11 @@
               <i class="fa fa-bars"></i>
             </button>
 
+            <button v-on:click='alterarStatus()'>{{buttonStatus}}</button>
+            <a>{{status}}</a>
             <!-- Topbar Navbar -->
-            <ul class="navbar-nav ml-auto">
 
+            <ul class="navbar-nav ml-auto">
               <!-- Nav Item - Alerts -->
               <li class="nav-item dropdown no-arrow mx-1">
                 <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -171,8 +179,8 @@
                 </div>
               </li>
 
+              
               <div class="topbar-divider d-none d-sm-block"></div>
-
               <!-- Nav Item - User Information -->
               <li class="nav-item dropdown no-arrow">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -205,7 +213,14 @@
 
           </nav>
           <!-- End of Topbar -->
-
+          <div v-if="modo_tela =='jogadoresOnline'">
+            <ul>
+              <li v-for="jogadores in usuariosOnline">
+                {{jogadores}}
+              </li>
+            </ul>
+              
+          </div>
           <!-- Begin Page Content -->
           <div class="container-fluid" v-if="modo_tela == 'encontrarEquipe'">
             <form class="">
@@ -342,6 +357,8 @@
   <!-- Page level custom scripts -->
   <script src="js/demo/chart-area-demo.js"></script>
   <script src="js/demo/chart-pie-demo.js"></script>
+
+  <script src="node_modules/socket.io-client/dist/socket.io.js"></script>
 
   <script src="js/app.js"></script>
 
