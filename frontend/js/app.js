@@ -315,11 +315,68 @@ function buscarAmigos(){
 
 }
 
+function adicionaPessoa(nickAmigoP, league_name){
+    let access_token = localStorage.getItem('access_token');
+    let token_type = localStorage.getItem('token_type');
+
+    let settings = {
+        "url": "http://localhost:8000/api/user/adicionaramigo",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+            "Authorization": token_type + " " + access_token,
+            "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+            nick: league_name,
+            nickamigo: nickAmigoP
+        }),
+        success: function(result) {
+            console.log(result.data);
+        },
+        error: function(data,status,er) {
+            var error = JSON.parse(data.responseText);
+            alert(error.message);
+            console.log(data);
+        }
+    }
+
+    $.ajax(settings);
+}
+
+function removerPessoa(nickAmigoP, league_name){
+    let access_token = localStorage.getItem('access_token');
+    let token_type = localStorage.getItem('token_type');
+    let settings = {
+        "url": "http://localhost:8000/api/user/removeramigo",
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+            "Authorization": token_type + " " + access_token,
+            "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+            nick: league_name,
+            nickamigo: nickAmigoP
+        }),
+        success: function(result) {
+            console.log(result.data);
+        },
+        error: function(data,status,er) {
+            var error = JSON.parse(data.responseText);
+            alert(error.message);
+            console.log(data);
+        }
+    }
+
+    $.ajax(settings);
+}
+
 function trocaModoApp(modoTela){
     app.modo_tela = modoTela;
 }
 
-var statusButton = 'Ficar Online';
+var statusButton = 'Pronto para jogar!';
 
 var app = new Vue({
     el: '#app',
@@ -354,20 +411,23 @@ var app = new Vue({
         },
         usuarioOnline() {
             app.status = 'Online';
-            app.buttonStatus = 'Ficar Offline';
+            app.buttonStatus = 'Não quero jogar agora.';
             this.socket.emit('USERONLINE', {
                 user: this.league_name
             });
         },
         usuarioOff(){
             app.status = 'Offline';
-            app.buttonStatus = 'Ficar Online';
+            app.buttonStatus = 'Pronto para jogar!';
             this.socket.emit('USEROFF', {
                 user: this.league_name
             });
         },
         verificaOnline(){
             this.socket.emit('INICIALIZA', {});
+        },
+        adicionarAmigo(nick){
+            adicionaPessoa(nick, app.league_name);
         }
     },
     mounted() {
@@ -376,7 +436,7 @@ var app = new Vue({
             data.forEach(function(usuario){
                 if(app.league_name == usuario){
                     app.status = 'Online';
-                    app.buttonStatus = 'Ficar Offline';
+                    app.buttonStatus = 'Não quero jogar agora.';
                 }
             })
         });

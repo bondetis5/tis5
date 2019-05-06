@@ -71,8 +71,8 @@
           </a>
           <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Adicionados</h6>
-              <a class="collapse-item" href="#" v-for='amigo in companheiros'>{{amigo.league_name}}</a>
+              <h6 class="collapse-header">Amigos Adicionados</h6>
+              <a class="collapse-item" href="#" v-for='amigo in companheiros'>{{amigo.amigo.league_name}}</a>
             </div>
           </div>
           <!-- <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -136,7 +136,7 @@
             </button>
 
             <button v-on:click='alterarStatus()'>{{buttonStatus}}</button>
-            <a>{{status}}</a>
+            <a> - {{status}}</a>
             <!-- Topbar Navbar -->
 
             <ul class="navbar-nav ml-auto">
@@ -292,6 +292,7 @@
               <p>Nick dos jogadores Encontrados para jogar com você:</p>
               <li v-for="companheiro in companheiros">
                 {{companheiro.league_name}}
+                <button v-on:click='adicionarAmigo(companheiro.league_name)'>Adicionar Como Amigo</button>
               </li>
               <p v-if="semCompanheiro">Não foi encontrada nenhuma pessoa para jogar com você =( </p>
             </div>
