@@ -136,48 +136,14 @@
             </button>
 
             <button v-on:click='alterarStatus()'>{{buttonStatus}}</button>
-            <a> - {{status}}</a>
+            <a class='mx-3'>{{status}}</a>
             <!-- Topbar Navbar -->
-
+            <a class='mx-3'>
+              Posição preferêncial para jogar:<span id='roleprincipal'> {{role_default}}</span>
+            </a>
+            <button v-on:click="editRole()">Editar</button>
             <ul class="navbar-nav ml-auto">
-              <!-- Nav Item - Alerts -->
-              <li class="nav-item dropdown no-arrow mx-1">
-                <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="fas fa-bell fa-fw"></i>
-                  <!-- Counter - Alerts -->
-                  <span class="badge badge-danger badge-counter">2</span>
-                </a>
-                <!-- Dropdown - Alerts -->
-                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-                  <h6 class="dropdown-header">
-                    Quem está procurando partida...
-                  </h6>
-                  <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="mr-3">
-                      <div class="icon-circle bg-primary">
-                        <i class="fas fa-file-alt text-white"></i>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="small text-gray-500">Há 2 segundos</div>
-                      Brian
-                    </div>
-                  </a>
-
-                  <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="mr-3">
-                      <div class="icon-circle bg-primary">
-                        <i class="fas fa-file-alt text-white"></i>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="small text-gray-500">Há 10 minutos</div>
-                      Santana
-                    </div>
-                  </a>
-
-                </div>
-              </li>
+              
 
               
               <div class="topbar-divider d-none d-sm-block"></div>

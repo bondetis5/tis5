@@ -46,7 +46,7 @@ Route::group([
     Route::post('removeramigo', 'UserController@removerAmigo');
     Route::post('adicionaramigo', 'UserController@addAmigo');
     Route::post('buscaramigos', 'UserController@buscarAmigos');
-
+    Route::post('getUserInfoR', 'LeagueController@getUserInfoR');
 });
 
 Route::group([

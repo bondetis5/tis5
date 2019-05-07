@@ -168,14 +168,19 @@ function retornaLogin(){
 function getInfoUser(){
     var access_token = localStorage.getItem('access_token');
     var token_type = localStorage.getItem('token_type');
+    var league_name = localStorage.getItem('league_name');
     $.ajax({
-        type: "GET",
-        url: "http://localhost:8000/api/getUserInfo",
-        headers:{
-            'Authorization': token_type+" "+access_token
+        type: "POST",
+        url: "http://localhost:8000/api/user/getUserInfoR",
+        "headers": {
+            "Authorization": token_type + " " + access_token,
+            "Content-Type": "application/json"
         },
+        "data": JSON.stringify({
+            name: league_name
+        }),
         success: function(result) {
-            var resultado = result;
+            app.role_default = result.data.role_default;
         },
         error: function(data,status,er) {
             var error = JSON.parse(data.responseText);
@@ -391,7 +396,8 @@ var app = new Vue({
         usuariosOnline: [],
         socket : io('http://localhost:3001'),
         buttonStatus: statusButton,
-        companheirosAdd: []
+        companheirosAdd: [],
+        role_default: ''
     },
 
     methods:{
@@ -430,6 +436,9 @@ var app = new Vue({
         },
         adicionarAmigo(nick){
             adicionaPessoa(nick, app.league_name);
+        },
+        editRole(){
+            document.getElementById('roleprincipal');
         }
     },
     mounted() {
@@ -443,5 +452,6 @@ var app = new Vue({
             })
         });
         this.verificaOnline();
+        getInfoUser();
     }
 });

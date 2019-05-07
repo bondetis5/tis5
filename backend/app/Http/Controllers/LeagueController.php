@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\UserRank;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class LeagueController extends Controller
 {
@@ -90,6 +91,50 @@ class LeagueController extends Controller
 
         return $response;
     }
+    public function getUserInfoR(Request $request)
+    {
+        $name = $request->name;
+        $response = array(
+            "status" => false,
+            "mensagem" => "",
+            "data" => []
+        );
+        $url = self::BASE_URL . "lol/summoner/v4/summoners/by-name/" . $name;
+        $headers = ['headers' => [
+            'Origin' => 'http://match.maker',
+            'Accept-Charset' => 'application/x-www-form-urlencoded; charset=UTF-8',
+            "Accept-Language" => "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            'X-Riot-Token' => LeagueController::apikey()
+        ]
+        ];
+        $client = new Client();
+
+        $response = array();
+
+        try {
+            $responseGet = $client->request('GET', $url, $headers);
+            if ($responseGet->getStatusCode() == 200) {
+                $retorno = json_decode(Auth::user());
+                $response["data"] = $retorno;
+                $response["status"] = true;
+                $response["mensagem"] = "Dados recuperados com sucesso";
+
+            } else if ($responseGet->getStatusCode() == 404) {
+                $response["data"] = null;
+                $response["status"] = false;
+                $response["mensagem"] = "O usuário informado não existe.";
+            }
+        } catch (\Exception $e) {
+            if($e->getCode() == 404)
+                $response["mensagem"] = "Usuário League of Legends não existe.";
+            else
+                $response["mensagem"] = $e->getMessage();
+            $response["status"] = false;
+        }
+
+        return $response;
+    }
+
     public function getRank() {
         $response = null;
         $user = Auth::user();
