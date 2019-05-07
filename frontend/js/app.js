@@ -236,6 +236,7 @@ function setRole(role){
 };
 
 function encontrarMatch(){
+    app.companheiros=[];
     let access_token = localStorage.getItem('access_token');
     let token_type = localStorage.getItem('token_type');
     let roleUsuario = $('#role-comp').val();
