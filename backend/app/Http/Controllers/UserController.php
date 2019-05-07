@@ -125,7 +125,10 @@ class UserController {
             if (empty($user) || empty($amigo)) {
                 throw new \Exception("League Name não encontrado");
             }
-            
+            if (Auth::user()->amigo()->where('id_user_amigo','=', $amigo->id)->first()){
+                throw new \Exception("Amigo já adicionado");
+            }
+
             $amizade = new Amigo();
             $amizade->id_user = $user->id;
             $amizade->id_user_amigo = $amigo->id;
@@ -138,7 +141,6 @@ class UserController {
             $retorno['message'] = $e->getMessage();
             $retorno['status'] = false;
         }
-
         return response()->json($retorno, 200);
     }
     

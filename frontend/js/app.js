@@ -338,7 +338,12 @@ function adicionaPessoa(nickAmigoP, league_name){
             nickamigo: nickAmigoP
         }),
         success: function(result) {
-            console.log(result.data);
+            if(result['status']== false){
+                alert(result['message']);
+            }
+            else{
+                console.log(result.data);
+            }
         },
         error: function(data,status,er) {
             var error = JSON.parse(data.responseText);
@@ -349,6 +354,7 @@ function adicionaPessoa(nickAmigoP, league_name){
 
     $.ajax(settings);
 }
+
 
 function removerPessoa(nickAmigoP, league_name){
     let access_token = localStorage.getItem('access_token');
@@ -382,7 +388,16 @@ function trocaModoApp(modoTela){
     app.modo_tela = modoTela;
 }
 
-var statusButton = 'Pronto para jogar!';
+function closeSidebar(){
+    $("#accordionSidebar").hide();
+    $("#showSidebarBtn").show();
+}
+function showSidebar() {
+    $("#accordionSidebar").show();
+    $("#showSidebarBtn").hide();
+}
+
+var statusButton = 'Ficar Online';
 
 var app = new Vue({
     el: '#app',
@@ -419,14 +434,14 @@ var app = new Vue({
         },
         usuarioOnline() {
             app.status = 'Online';
-            app.buttonStatus = 'Não quero jogar agora.';
+            app.buttonStatus = 'Ficar Offline';
             this.socket.emit('USERONLINE', {
                 user: this.league_name
             });
         },
         usuarioOff(){
             app.status = 'Offline';
-            app.buttonStatus = 'Pronto para jogar!';
+            app.buttonStatus = 'Ficar Online';
             this.socket.emit('USEROFF', {
                 user: this.league_name
             });
@@ -447,11 +462,13 @@ var app = new Vue({
             data.forEach(function(usuario){
                 if(app.league_name == usuario){
                     app.status = 'Online';
-                    app.buttonStatus = 'Não quero jogar agora.';
+                    app.buttonStatus = 'Ficar Offline';
                 }
             })
         });
         this.verificaOnline();
         getInfoUser();
     }
+
+
 });
