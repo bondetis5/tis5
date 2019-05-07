@@ -244,8 +244,8 @@ function encontrarMatch(){
     $.each($("input[name='roles']:checked"), function(){
         rolesP.push($(this).val());
     });
-    let minLevelP = $('#minLevel').val();
-    let maxLevelP = $('#maxLevel').val();
+    let minLevelP = parseInt($('#minLevel').val());
+    let maxLevelP = parseInt($('#maxLevel').val());
 
     let settings = {
         "url": "http://localhost:8000/api/user/encontrarmatch",
@@ -302,7 +302,7 @@ function buscarAmigos(){
             nick: nickP
         }),
         success: function(result) {
-            app.companheiros = result.data;
+            app.companheirosAdd = result.data;
         },
         error: function(data,status,er) {
             var error = JSON.parse(data.responseText);
@@ -389,7 +389,8 @@ var app = new Vue({
         status: 'Offline',
         usuariosOnline: [],
         socket : io('http://localhost:3001'),
-        buttonStatus: statusButton
+        buttonStatus: statusButton,
+        companheirosAdd: []
     },
 
     methods:{
