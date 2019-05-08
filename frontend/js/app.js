@@ -194,7 +194,34 @@ function getInfoUser(){
     });
 };
 
-
+function getAvaliacaoUser(){
+    var access_token = localStorage.getItem('access_token');
+    var token_type = localStorage.getItem('token_type');
+    var league_name = localStorage.getItem('league_name');
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8000/api/avaliacao/buscaravaliacao",
+        "headers": {
+            "Authorization": token_type + " " + access_token,
+            "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+            nick: league_name
+        }),
+        success: function(result) {
+            if(result != null || result != ''){
+                app.avaliacao_user = result.data.avaliacao;
+            }else{
+                app.avaliacao_user = 'N/A';
+            }
+        },
+        error: function(data,status,er) {
+            var error = JSON.parse(data.responseText);
+            alert(error.message);
+            console.log(data);
+        }
+    });
+};
 
 function verificaLogin(){
     if(!(localStorage.getItem('access_token'))){
@@ -417,7 +444,8 @@ var app = new Vue({
         buttonStatus: statusButton,
         companheirosAdd: [],
         role_default: '',
-        button_edit: true
+        button_edit: true,
+        avaliacao_user: 'N/A'
     },
 
     methods:{
@@ -483,6 +511,7 @@ var app = new Vue({
         });
         this.verificaOnline();
         getInfoUser();
+        getAvaliacaoUser();
     }
 
 
