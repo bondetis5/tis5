@@ -140,9 +140,30 @@
             <a class='mx-3'>{{status}}</a>
             <!-- Topbar Navbar -->
             <a class='mx-3'>
-              Posição preferêncial para jogar:<span id='roleprincipal'> {{role_default}}</span>
+              Posição preferêncial para jogar:<span id='roleprincipal' v-if="button_edit"> {{role_default}}</span>
             </a>
-            <button class="btn btn-light" v-on:click="editRole()">Editar</button>
+            <hr2 class="col-mx-2" v-if="!button_edit">
+                <select name="role-comp" id="select-role-principal" class="custom-select">
+                  <option value="BOT">
+                    BOT
+                  </option>
+                  <option value="SUPORTE">
+                    SUPORTE
+                  </option>
+                  <option value="TOPO">
+                    TOPO
+                  </option>
+                  <option value="MEIO">
+                    MEIO
+                  </option>
+                  <option value="SELVA">
+                    SELVA
+                  </option>
+                </select>
+            </hr2>
+            <button class="btn btn-light" v-on:click="editRole()" v-if="button_edit">Editar</button>
+            <button class="btn btn-light" v-on:click="saveRole()" v-if="!button_edit">Salvar</button>
+            <button class="btn btn-light" v-on:click="editRole()" v-if="!button_edit">Cancelar</button>
             <ul class="navbar-nav ml-auto">
               
 

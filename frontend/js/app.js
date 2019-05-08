@@ -180,7 +180,11 @@ function getInfoUser(){
             name: league_name
         }),
         success: function(result) {
-            app.role_default = result.data.role_default;
+            if(result != null || result != ''){
+                app.role_default = result.data.role_default;
+            }else{
+                app.role_default = 'Clique em Editar para selecionar uma posição!';
+            }
         },
         error: function(data,status,er) {
             var error = JSON.parse(data.responseText);
@@ -412,7 +416,8 @@ var app = new Vue({
         socket : io('http://localhost:3001'),
         buttonStatus: statusButton,
         companheirosAdd: [],
-        role_default: ''
+        role_default: '',
+        button_edit: true
     },
 
     methods:{
@@ -453,7 +458,17 @@ var app = new Vue({
             adicionaPessoa(nick, app.league_name);
         },
         editRole(){
-            document.getElementById('roleprincipal');
+            if(app.button_edit){
+                app.button_edit = false;
+            } else{
+                app.button_edit = true;
+            }
+        },
+        saveRole(){
+            let roleUsuario = $('#select-role-principal').val();
+            app.button_edit = true;
+            app.role_default = roleUsuario;
+            setRole(roleUsuario);
         }
     },
     mounted() {
