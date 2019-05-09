@@ -193,7 +193,7 @@ function getInfoUser(){
     });
 };
 
-function adicionarAvaliacao(nick_avaliado, league_name, avaliacao){
+function adicionarAvaliacao(league_name, nick_avaliado, avaliacao){
     var access_token = localStorage.getItem('access_token');
     var token_type = localStorage.getItem('token_type');
     $.ajax({
@@ -204,8 +204,8 @@ function adicionarAvaliacao(nick_avaliado, league_name, avaliacao){
             "Content-Type": "application/json"
         },
         "data": JSON.stringify({
-            nick: league_name,
-            nickavaliado: nick_avaliado,
+            nick: nick_avaliado,
+            nickavaliado: league_name,
             avaliacao: avaliacao
         }),
         success: function(result) {
@@ -299,6 +299,35 @@ function getAvaliacaoUser(){
                 app.avaliacao_user = result.data.avaliacao;
             }else{
                 app.avaliacao_user = 'N/A';
+            }
+        },
+        error: function(data,status,er) {
+            var error = JSON.parse(data.responseText);
+            alert(error.message);
+            console.log(data);
+        }
+    });
+};
+
+function getAvaliacaoUserAmigo(){
+    var access_token = localStorage.getItem('access_token');
+    var token_type = localStorage.getItem('token_type');
+    var league_name = app.usuarioPerfil;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8000/api/avaliacao/buscaravaliacao",
+        "headers": {
+            "Authorization": token_type + " " + access_token,
+            "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+            nick: league_name
+        }),
+        success: function(result) {
+            if(result != null || result != ''){
+                app.avaliacaoAmigo = result.data.avaliacao;
+            }else{
+                app.avaliacaoAmigo= 'N/A';
             }
         },
         error: function(data,status,er) {
@@ -510,6 +539,7 @@ function trocaModoAppPerfil(modoTela, html){
     app.usuarioPerfil = html.innerText;
     app.summonerElo = getSummonerElo(html.innerText);
     app.championMastery = getChampionMastery(html.innerText);
+    getAvaliacaoUserAmigo();
 }
 
 function closeSidebar(){
@@ -542,7 +572,9 @@ var app = new Vue({
         message: '',
         championMastery: [],
         summonerElo: [],
-        usuarioPerfil:''
+        usuarioPerfil:'',
+        button_aval: true,
+        avaliacaoAmigo:'N/A'
     },
 
     methods:{
@@ -585,8 +617,18 @@ var app = new Vue({
         removerAmigo(nick){
             removerPessoa(nick, app.league_name);
         },
-        adicionarAvaliacao(nick, avaliacao){
-            adicionarAvaliacao((nick, app.league_name, avaliacao));
+        selecionaAvaliacao(){
+            if(app.button_aval == true){
+                app.button_aval=false;
+            }else{
+                app.button_aval=true;
+            }
+
+        },
+        adicionarAvaliacao(){
+            var avaliacaoUsuario = $('#avaliacao-usuario').val();
+            app.button_aval = true;
+            adicionarAvaliacao(app.league_name, app.usuarioPerfil, avaliacaoUsuario)
         },
         editRole(){
             if(app.button_edit){

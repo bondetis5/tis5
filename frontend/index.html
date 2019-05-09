@@ -292,15 +292,42 @@
           <!-- /.container-fluid -->
            <div class="container-fluid" v-if="modo_tela == 'perfilUsuario'">
              <div class="container">
-            <div class="col-md-2">
-            {{usuarioPerfil}}
+               <div class="col-md-6">
+                 {{usuarioPerfil}} <span> | Avaliacao: {{avaliacaoAmigo}}</span>
+                 <button class="btn btn-light" v-on:click="selecionaAvaliacao()" v-if="button_aval">Avaliar Jogador</button>
+                 <button class="btn btn-light" v-on:click="adicionarAvaliacao()" v-if="!button_aval">Salvar</button>
+                 <button class="btn btn-light" v-on:click="selecionaAvaliacao()" v-if="!button_aval">Cancelar</button>
+                 <hr2 class="col-mx-2" v-if="!button_aval">
+                <select name="avaliacao-usuario" id="avaliacao-usuario" class="custom-select">
+                  <option value="5">
+                    5
+                  </option>
+                  <option value="4">
+                    4
+                  </option>
+                  <option value="3">
+                    3
+                  </option>
+                  <option value="2">
+                    2
+                  </option>
+                  <option value="1">
+                    1
+                  </option>
+                </select>
+              </hr2>
+
               <a v-for="dado in summonerElo">
-                <div class="row"> Level : {{dado.level}}</div>
+              <div class="row"> Level : {{dado.level}}</div>
                 <div class="row"> LeaguePoints : {{dado.leaguePoints}}</div>
                 <div class="row"> Rank : {{dado.rank}}</div>
                 <div class="row"> Tier : {{dado.tier}}</div>
-                <div class="row"> Veteran : {{dado.veteran}}</div>
+                <div class="row"> Fila : {{dado.queueType}}</div>
+                <div class="row"> Vitórias : {{dado.wins}}</div>
+                <div class="row"> Derrotas : {{dado.losses}}</div>
+
               </a>
+
             </div>
 
             <div class="col-md-5">

@@ -197,7 +197,9 @@ class LeagueController extends Controller
                     'leaguePoints' => $data[0]->leaguePoints,
                     'rank' => $data[0]->rank,
                     'tier' => $data[0]->tier,
-                    'veteran' => $data[0]->veteran
+                    'queueType' => $data[0]->queueType,
+                    'wins' => $data[0]->wins,
+                    'losses' => $data[0]->losses
 
                 );
                 $response["data"] = $retorno;
