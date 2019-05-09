@@ -13,7 +13,6 @@
 //     }
 
 // });
-
 function login(){
     let emailP = $('#email').val();
     let passwordP = $('#password').val();
@@ -193,6 +192,93 @@ function getInfoUser(){
         }
     });
 };
+
+function adicionarAvaliacao(nick_avaliado, league_name, avaliacao){
+    var access_token = localStorage.getItem('access_token');
+    var token_type = localStorage.getItem('token_type');
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8000/api/avaliacao/adicionaravaliacao",
+        "headers": {
+            "Authorization": token_type + " " + access_token,
+            "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+            nick: league_name,
+            nickavaliado: nick_avaliado,
+            avaliacao: avaliacao
+        }),
+        success: function(result) {
+            if(result != null || result != ''){
+                app.message = result.message;
+            }else{
+                app.message = 'Erro ao adicionar';
+            }
+        },
+        error: function(data,status,er) {
+            var error = JSON.parse(data.responseText);
+            alert(error.message);
+            console.log(data);
+        }
+    })
+}
+
+function getSummonerElo(nick){
+    var access_token = localStorage.getItem('access_token');
+    var token_type = localStorage.getItem('token_type');
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8000/api/user/getSummonerElo",
+        "headers": {
+            "Authorization": token_type + " " + access_token,
+            "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+            nick: nick
+        }),
+        success: function(result) {
+            if(result != null || result != ''){
+                app.summonerElo = result.data;
+            }else{
+                app.message = 'Erro ao buscar as informações';
+            }
+        },
+        error: function(data,status,er) {
+            var error = JSON.parse(data.responseText);
+            alert(error.message);
+            console.log(data);
+        }
+    })
+}
+
+function getChampionMastery(nick){
+    var access_token = localStorage.getItem('access_token');
+    var token_type = localStorage.getItem('token_type');
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8000/api/user/getChampionMastery",
+        "headers": {
+            "Authorization": token_type + " " + access_token,
+            "Content-Type": "application/json"
+        },
+        "data": JSON.stringify({
+            nick: nick
+        }),
+        success: function(result) {
+            if(result != null || result != ''){
+                app.championMastery = result.data;
+            }else{
+                app.message = 'Erro ao buscar informações';
+            }
+        },
+        error: function(data,status,er) {
+            var error = JSON.parse(data.responseText);
+            alert(error.message);
+            console.log(data);
+        }
+    })
+}
+
 
 function getAvaliacaoUser(){
     var access_token = localStorage.getItem('access_token');
@@ -419,6 +505,13 @@ function trocaModoApp(modoTela){
     app.modo_tela = modoTela;
 }
 
+function trocaModoAppPerfil(modoTela, html){
+    app.modo_tela = modoTela;
+    app.usuarioPerfil = html.innerText;
+    app.summonerElo = getSummonerElo(html.innerText);
+    app.championMastery = getChampionMastery(html.innerText);
+}
+
 function closeSidebar(){
     $("#accordionSidebar").hide();
     $("#showSidebarBtn").show();
@@ -445,7 +538,11 @@ var app = new Vue({
         companheirosAdd: [],
         role_default: '',
         button_edit: true,
-        avaliacao_user: 'N/A'
+        avaliacao_user: 'N/A',
+        message: '',
+        championMastery: [],
+        summonerElo: [],
+        usuarioPerfil:''
     },
 
     methods:{
@@ -484,6 +581,12 @@ var app = new Vue({
         },
         adicionarAmigo(nick){
             adicionaPessoa(nick, app.league_name);
+        },
+        removerAmigo(nick){
+            removerPessoa(nick, app.league_name);
+        },
+        adicionarAvaliacao(nick, avaliacao){
+            adicionarAvaliacao((nick, app.league_name, avaliacao));
         },
         editRole(){
             if(app.button_edit){

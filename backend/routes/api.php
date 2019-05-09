@@ -47,6 +47,8 @@ Route::group([
     Route::post('adicionaramigo', 'UserController@addAmigo');
     Route::post('buscaramigos', 'UserController@buscarAmigos');
     Route::post('getUserInfoR', 'LeagueController@getUserInfoR');
+    Route::post('getSummonerElo', 'LeagueController@getSummonerElo');
+    Route::post('getChampionMastery', 'LeagueController@getChampionMastery');
 });
 
 Route::group([

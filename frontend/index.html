@@ -73,7 +73,7 @@
           <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">Amigos Adicionados</h6>
-              <a class="collapse-item" href="#" v-for='amigo in companheirosAdd'>{{amigo.amigo.league_name}}</a>
+              <a class="collapse-item" href="#" v-for='amigo in companheirosAdd' onclick="trocaModoAppPerfil('perfilUsuario', this)">{{amigo.amigo.league_name}}</a>
             </div>
           </div>
           <!-- <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -290,7 +290,29 @@
             </div>
           </div>
           <!-- /.container-fluid -->
+           <div class="container-fluid" v-if="modo_tela == 'perfilUsuario'">
+             <div class="container">
+            <div class="col-md-2">
+            {{usuarioPerfil}}
+              <a v-for="dado in summonerElo">
+                <div class="row"> Level : {{dado.level}}</div>
+                <div class="row"> LeaguePoints : {{dado.leaguePoints}}</div>
+                <div class="row"> Rank : {{dado.rank}}</div>
+                <div class="row"> Tier : {{dado.tier}}</div>
+                <div class="row"> Veteran : {{dado.veteran}}</div>
+              </a>
+            </div>
 
+            <div class="col-md-5">
+              Maestria de heróis
+              <a v-for="champion in championMastery">
+                <div class="row"> Nome do herói : {{champion.championId}}</div>
+                <div class="row"> Level : {{champion.championLevel}}</div>
+                <div class="row"> Maestria : {{champion.championPoints}}</div>
+              </a>
+            </div>
+          </div>
+           </div>
         </div>
         <!-- End of Main Content -->
 

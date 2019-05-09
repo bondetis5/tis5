@@ -17,6 +17,9 @@ class LeagueController extends Controller
     {
         //
     }
+
+
+
     public function getUserId($name, $user = null) {
         $user = empty($user) ? Auth::user() : $user;
 
@@ -91,6 +94,132 @@ class LeagueController extends Controller
 
         return $response;
     }
+
+    public function  getUserInfoByName(Request $request){
+
+        $name = $request->name;
+
+        $user = User::where('name', '=', $name);
+
+        $user = $this->getUserInfo($user->league_name);
+
+        $response = array(
+            "status" => false,
+            "mensagem" => "",
+            "userData" => [],
+            "championData" => []
+        );
+
+    }
+
+    public function getChampionMastery (Request $request){
+
+        $name = $request->nick;
+        $user = $this->getUserInfo($name);
+        $encryptedSummonerId = $user['data']->id;
+        $url = self::BASE_URL . "lol/champion-mastery/v4/champion-masteries/by-summoner/" . $encryptedSummonerId;
+        $headers = ['headers' => [
+            'Origin' => 'http://match.maker',
+            'Accept-Charset' => 'application/x-www-form-urlencoded; charset=UTF-8',
+            "Accept-Language" => "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            'X-Riot-Token' => LeagueController::apikey()
+        ]
+        ];
+        $client = new Client();
+
+        $response = array();
+
+        try {
+            $responseGet = $client->request('GET', $url, $headers);
+            if ($responseGet->getStatusCode() == 200) {
+                $data = json_decode($responseGet->getBody()->getContents());
+                if(sizeof($data) > 3){
+                for( $i = 0; $i < 3 ;$i++){
+                    $retorno[$i] = array(
+                        'championId' => $data[$i]->championId,
+                        'championLevel' => $data[$i]->championLevel,
+                        'championPoints' => $data[$i]->championPoints
+                    );
+                }
+                }else {
+                for( $i = 0; $i < sizeof($data) ;$i++){
+                    $retorno[$i] = array(
+                        'championId' => $data[$i]->championId,
+                        'championLevel' => $data[$i]->championLevel,
+                        'championPoints' => $data[$i]->championPoints
+                    );
+                }
+            }
+                $response["data"] = $retorno;
+                $response["status"] = true;
+                $response["mensagem"] = "Dados recuperados com sucesso";
+
+            } else if ($responseGet->getStatusCode() == 404) {
+                $response["data"] = null;
+                $response["status"] = false;
+                $response["mensagem"] = "Erro ao decriptar o id.";
+            }
+        } catch (\Exception $e) {
+            if($e->getCode() == 404)
+                $response["mensagem"] = "Erro ao decriptar o id.";
+            else
+                $response["mensagem"] = $e->getMessage();
+            $response["status"] = false;
+        }
+
+        return $response;
+    }
+
+
+    public function getSummonerElo(Request $request){
+
+        $name = $request->nick;
+        $user = $this->getUserInfo($name);
+        $encryptedSummonerId = $user['data']->id;
+        $url = self::BASE_URL . "lol/league/v4/entries/by-summoner/" . $encryptedSummonerId;
+        $headers = ['headers' => [
+            'Origin' => 'http://match.maker',
+            'Accept-Charset' => 'application/x-www-form-urlencoded; charset=UTF-8',
+            "Accept-Language" => "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            'X-Riot-Token' => LeagueController::apikey()
+        ]
+        ];
+        $client = new Client();
+
+        $response = array();
+
+        try {
+            $responseGet = $client->request('GET', $url, $headers);
+            if ($responseGet->getStatusCode() == 200) {
+                $data = json_decode($responseGet->getBody()->getContents());
+                $retorno[0] = array(
+                    'level' => $user['data']->summonerLevel,
+                    'leaguePoints' => $data[0]->leaguePoints,
+                    'rank' => $data[0]->rank,
+                    'tier' => $data[0]->tier,
+                    'veteran' => $data[0]->veteran
+
+                );
+                $response["data"] = $retorno;
+                $response["status"] = true;
+                $response["mensagem"] = "Dados recuperados com sucesso";
+
+            } else if ($responseGet->getStatusCode() == 404) {
+                $response["data"] = null;
+                $response["status"] = false;
+                $response["mensagem"] = "Erro ao decriptar o id.";
+            }
+        } catch (\Exception $e) {
+            if($e->getCode() == 404)
+                $response["mensagem"] = "Erro ao decriptar o id.";
+            else
+                $response["mensagem"] = $e->getMessage();
+            $response["status"] = false;
+        }
+
+        return $response;
+    }
+
     public function getUserInfoR(Request $request)
     {
         $name = $request->name;
@@ -182,6 +311,7 @@ class LeagueController extends Controller
         }
         return $response;
     }
+
     public function getMatches($matchid) {
         $user = Auth::user();
         $accountid = $user->league_accountid;
